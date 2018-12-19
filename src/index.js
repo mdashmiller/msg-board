@@ -16,9 +16,9 @@ const store = createStore(rootReducer,
 		applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
 		reduxFirestore(fbConfig),
 		reactReduxFirebase(fbConfig)
-	)  
+	)
 )
-
+	  
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'))
 
 // If you want your app to work offline and load faster, you can change
