@@ -32,10 +32,14 @@ form h5 {
 	width: 100%;
 	box-shadow: 0 2px 2px #9e9e9e;
 	z-index: 1;
+	animation-name: drop-down;
+	animation-duration: 0.2s;
 }
 
 .mobile-links {
 	margin-top: 8px;
+	animation-name: appear;
+	animation-duration: 0.2s;
 }
 
 .mobile-links li a {
@@ -50,6 +54,11 @@ form h5 {
 	margin-bottom: 28px;
 }
 
+.logged-in {
+	animation-name: drop-down-farther;
+	animation-duration: 0.2s;
+}
+
 /*change materialize form field default colors*/
 input[type=text]:not(.browser-default):focus:not([readonly]),
 input[type=email]:not(.browser-default):focus:not([readonly]),
@@ -59,7 +68,23 @@ textarea.materialize-textarea:focus:not([readonly]) {
 	box-shadow: none;
 }
 
-/*hide side mobile sidenav*/
+/*hide mobile nav menu*/
 .hidden {
 	display: none;
+}
+
+/*animations*/
+@keyframes  drop-down {
+	from {height: 0px;}
+	to {height: 92px;}
+}
+
+@keyframes drop-down-farther {
+	from {height: 0px;}
+	to {height: 127px;}
+}
+
+@keyframes  appear {
+	from {opacity: 0;}
+	to {opacity: 1;}
 }
