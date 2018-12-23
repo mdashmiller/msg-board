@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import DesktopSignedInLinks from './desktop/DesktopSignedInLinks'
 import DesktopSignedOutLinks from './desktop/DesktopSignedOutLinks'
 import MobileSignedInLinks from './mobile/MobileSignedInLinks'
@@ -8,25 +8,27 @@ import { connect } from 'react-redux'
 
 class Navbar extends Component {
 	 
-	 state = {
-	 	sideNavVisible: false
-	 }
+	state = {
+	 	mobileNavVisible: false
+	}
 
-	 // component methods
+	// component methods
 
-	 showOrHideMenu = () =>
+	showOrHideMenu = () =>
 	 	// sets state to hide or show the
 	 	// mobile drop-down nav
 	 	this.setState(prevState => {
-	 		const { sideNavVisible } = prevState
+	 		const { mobileNavVisible } = prevState
 	 		return {
-	 			sideNavVisible: !sideNavVisible
+	 			mobileNavVisible: !mobileNavVisible
 	 		}
 	 	})
 
 	render() {
-		const { sideNavVisible } = this.state
+		const { mobileNavVisible } = this.state
 		const { auth, profile } = this.props
+		// display a different set of links to authenticated
+		// versus unauthenticated users
 		const desktopLinks = auth.uid ? <DesktopSignedInLinks profile={profile} /> : <DesktopSignedOutLinks />
 		const mobileLinks = auth.uid ? (
 			<MobileSignedInLinks showOrHideMenu={this.showOrHideMenu} />
@@ -49,24 +51,21 @@ class Navbar extends Component {
 						<div className="right hide-on-med-and-down">
 							{ desktopLinks }
 						</div>
-
 					</div>
 				</nav>
 		
 				{/*mobile menu*/}
-				<div className={ `mobile-menu grey darken-3 ${ !sideNavVisible ? 'hidden' : null }` }>
+				<div
+					className={`mobile-menu grey darken-3 ${!mobileNavVisible ? 'hidden' : null} ${auth.uid ? 'logged-in' : null}`}
+				>
 					{ mobileLinks }
 				</div>
-				
 			</header>
 		)
 	}
-	
-	
 }
 
 const mapStateToProps = state => {
-	console.log(state)
 	return {
 		auth: state.firebase.auth,
 		profile: state.firebase.profile
