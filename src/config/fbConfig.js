@@ -1,10 +1,11 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+import Key from './Key'
 
 // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyBNvk2C-Zk61M1tR8R_0GYxMml6el1Ra3A",
+    apiKey: Key.apiKey,
     authDomain: "msg-board-58031.firebaseapp.com",
     databaseURL: "https://msg-board-58031.firebaseio.com",
     projectId: "msg-board-58031",
