@@ -2,6 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signOut } from '../../../store/actions/authActions'
+import PropTypes from 'prop-types'
 
 const DesktopSignedInLinks = props => {
 	return (
@@ -19,6 +20,17 @@ const mapDispatchToProps = dispatch => {
 	return {
 		signOut: () => dispatch(signOut())
 	}
+}
+
+DesktopSignedInLinks.propTypes = {
+	profile: PropTypes.shape({
+		firstName: PropTypes.string,
+		initials: PropTypes.string,
+		isEmpty: PropTypes.bool,
+		isLoaded: PropTypes.bool,
+		lastName: PropTypes.string
+	}).isRequired,
+	signOut: PropTypes.func.isRequired
 }
 
 export default connect(null, mapDispatchToProps)(DesktopSignedInLinks)

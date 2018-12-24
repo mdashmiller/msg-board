@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { createPost } from  '../../store/actions/postActions'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 class CreatePost extends Component {
 
@@ -59,6 +60,41 @@ const mapDispatchToProps = dispatch => {
 	return {
 		createPost: post => dispatch(createPost(post))
 	}
+}
+
+CreatePost.propTypes = {
+	auth: PropTypes.shape({
+		apiKey: PropTypes.string.isRequired,
+		appName: PropTypes.string.isRequired,
+		authDomain: PropTypes.string.isRequired,
+		createdAt: PropTypes.string.isRequired,
+		displayName: PropTypes.string,
+		email: PropTypes.string,
+		emailVerified: PropTypes.bool,
+		isAnonymous: PropTypes.bool,
+		isEmpty: PropTypes.bool,
+		isLoaded: PropTypes.bool,
+		lastLoginAt: PropTypes.string,
+		phoneNumber: PropTypes.string,
+		photoURL: PropTypes.string,
+		providerData: PropTypes.arrayOf(PropTypes.shape({
+			displayName: PropTypes.string,
+			email: PropTypes.string,
+			phoneNumber: PropTypes.string,
+			photoURL: PropTypes.string,
+			providerId: PropTypes.string,
+			uid: PropTypes.string
+		})),
+		redirectEventId: PropTypes.string,
+		stsTokenManager: PropTypes.shape({
+			accessToken: PropTypes.string.isRequired,
+			apiKey: PropTypes.string.isRequired,
+			expirationTime: PropTypes.number.isRequired,
+			refreshToken: PropTypes.string.isRequired
+		}).isRequired,
+		uid: PropTypes.string.isRequired
+	}).isRequired,
+	createPost: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatePost)
