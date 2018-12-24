@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 class Dashboard extends Component {
 	render() {
@@ -33,6 +34,34 @@ const mapStateToProps = state => {
 		auth: state.firebase.auth,
 		notifications: state.firestore.ordered.notifications
 	}
+}
+
+Dashboard.propTypes = {
+	posts: PropTypes.arrayOf(PropTypes.shape({
+		id: PropTypes.string,
+		authorFirstName: PropTypes.string.isRequired,
+		authorId: PropTypes.string,
+		authorLastName: PropTypes.string.isRequired,
+		createdAt: PropTypes.shape({
+			nanoseconds: PropTypes.number.isRequired,
+			seconds: PropTypes.number.isRequired
+		}).isRequired,
+		message: PropTypes.string.isRequired,
+		title: PropTypes.string.isRequired
+	})),
+	auth: PropTypes.shape({
+		isEmpty: PropTypes.bool.isRequired,
+		isLoaded: PropTypes.bool.isRequired
+	}).isRequired,
+	notifications: PropTypes.arrayOf(PropTypes.shape({
+		content: PropTypes.string.isRequired,
+		id: PropTypes.string,
+		time: PropTypes.shape({
+			nanoseconds: PropTypes.number.isRequired,
+			seconds: PropTypes.number.isRequired
+		}).isRequired,
+		user: PropTypes.string.isRequired
+	}))
 }
 
 export default compose(

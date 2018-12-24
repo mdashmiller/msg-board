@@ -2,6 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signOut } from '../../../store/actions/authActions'
+import PropTypes from 'prop-types'
 
 const MobileSignedInLinks = ({ showOrHideMenu, signOut }) => {
 
@@ -23,6 +24,11 @@ const mapDispatchToProps = dispatch => {
 	return {
 		signOut: () => dispatch(signOut())
 	}
+}
+
+MobileSignedInLinks.propTypes = {
+	showOrHideMenu: PropTypes.func.isRequired,
+	signOut: PropTypes.func.isRequired
 }
 
 export default connect(null, mapDispatchToProps)(MobileSignedInLinks)

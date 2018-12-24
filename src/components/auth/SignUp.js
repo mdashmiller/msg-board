@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signUp } from '../../store/actions/authActions'
+import PropTypes from 'prop-types'
 
-class SignIn extends Component {
+class SignUp extends Component {
 
 	state = {
 		email: '',
@@ -74,4 +75,13 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn)
+SignUp.propTypes = {
+	auth: PropTypes.shape({
+		isEmpty: PropTypes.bool.isRequired,
+		isLoaded: PropTypes.bool.isRequired
+	}).isRequired,
+	authError: PropTypes.object,
+	signUp: PropTypes.func.isRequired
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp)

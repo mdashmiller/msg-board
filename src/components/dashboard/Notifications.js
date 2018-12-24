@@ -1,9 +1,10 @@
 import React from 'react'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 
 const Notifications = props => {
 	const { notifications } = props
-
+	
 	return (
 		<div className="section">
 			<div className="card z-depth-0">
@@ -24,6 +25,18 @@ const Notifications = props => {
 			</div>
 		</div>
 	)
+}
+
+Notifications.propTypes = {
+	notifications: PropTypes.arrayOf(PropTypes.shape({
+		content: PropTypes.string.isRequired,
+		id: PropTypes.string,
+		time: PropTypes.shape({
+			nanoseconds: PropTypes.number.isRequired,
+			seconds: PropTypes.number.isRequired
+		}).isRequired,
+		user: PropTypes.string.isRequired
+	}))
 }
 
 export default Notifications

@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 
 const PostSummary = ({ post }) => {
 	return (
@@ -11,6 +12,21 @@ const PostSummary = ({ post }) => {
 			</div>
 		</div>
 	)
+}
+
+PostSummary.propTypes = {
+	post: PropTypes.shape({
+		authorFirstName: PropTypes.string.isRequired,
+		authorId: PropTypes.string,
+		authorLastName: PropTypes.string.isRequired,
+		createdAt: PropTypes.shape({
+			nanoseconds: PropTypes.number.isRequired,
+			seconds: PropTypes.number.isRequired
+		}).isRequired,
+		id: PropTypes.string,
+		message: PropTypes.string.isRequired,
+		title: PropTypes.string.isRequired
+	}).isRequired
 }
 
 export default PostSummary

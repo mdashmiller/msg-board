@@ -5,6 +5,7 @@ import DesktopSignedOutLinks from './desktop/DesktopSignedOutLinks'
 import MobileSignedInLinks from './mobile/MobileSignedInLinks'
 import MobileSignedOutLinks from './mobile/MobileSignedOutLinks'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
 class Navbar extends Component {
 	 
@@ -70,6 +71,17 @@ const mapStateToProps = state => {
 		auth: state.firebase.auth,
 		profile: state.firebase.profile
 	}
+}
+
+Navbar.propTypes = {
+	auth: PropTypes.shape({
+		isEmpty: PropTypes.bool.isRequired,
+		isLoaded: PropTypes.bool.isRequired
+	}).isRequired,
+	profile: PropTypes.shape({
+		isEmpty: PropTypes.bool.isRequired,
+		isLoaded: PropTypes.bool.isRequired,
+	}).isRequired
 }
 
 export default connect(mapStateToProps)(Navbar)

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { signIn } from '../../store/actions/authActions'
 import { Redirect } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 class SignIn extends Component {
 
@@ -62,6 +63,15 @@ const mapDispatchToProps = dispatch => {
 	return {
 		signIn: credentials => dispatch(signIn(credentials))
 	}
+}
+
+SignIn.propTypes = {
+	auth: PropTypes.shape({
+		isEmpty: PropTypes.bool.isRequired,
+		isLoaded: PropTypes.bool.isRequired
+	}).isRequired,
+	authError: PropTypes.object,
+	signIn: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn)
