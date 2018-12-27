@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { authUpdate, userUpdate } from '../../store/actions/authActions'
 
 class EditProfile extends Component {
@@ -71,7 +72,9 @@ class EditProfile extends Component {
 
 	render() {
 		const { formError, submitted } = this.state
-		const { authError } = this.props
+		const { auth, authError } = this.props
+
+		if (!auth.uid) return <Redirect to="/signin" />
 
 		return (
 			<div className="container">
@@ -100,23 +103,19 @@ class EditProfile extends Component {
 					</div>
 					<div className="input-field">
 						<button className="btn purple lighten-1 z-depth-0">Update</button>
+						<div className="center red-text">
+							{ formError && <p>Please complete all fields</p> }
+							{ authError &&
+								<div>
+									<p>We're having a little trouble on our end</p>
+									<p>Please try again later</p>
+								</div>
+							}
+						</div>
+						<div className="center green-text">
+							{ !authError && submitted && <p>Profile successfully updated!</p> }
+						</div>
 					</div>
-				{ formError &&
-					<div className="center red-text">
-						<p>Please complete all fields</p>
-					</div>
-				}
-				{ authError &&
-					<div className="center red-text">
-						<p>We're having a little trouble on our end.</p>
-						<p>Please try again later.</p>
-					</div>
-				}
-				{ !authError && submitted &&
-					<div className="center green-text">
-						<p>Profile successfully updated!</p>
-					</div>
-				}
 				</form>
 			</div>
 		)
@@ -124,7 +123,9 @@ class EditProfile extends Component {
 }
 
 const mapStateToProps = state => {
+	console.log(state)
 	return {
+		auth: state.firebase.auth,
 		firstName: state.firebase.profile.firstName,
 		lastName: state.firebase.profile.lastName,
 		email: state.firebase.auth.email,
