@@ -45,3 +45,36 @@ export const signUp = newUser => {
 		})
 	}
 }
+
+export const authUpdate = email => {
+	return (dispatch, getState, { getFirebase }) => {
+		const firebase = getFirebase()
+		const user = firebase.auth().currentUser
+
+		user.updateEmail(email).then(() => {
+			console.log('update success')
+			dispatch({ type: 'UPDATE_SUCCESS' })
+		}).catch(err => {
+			console.log('update error')
+			dispatch({ type: 'UPDATE_ERROR' })
+		})
+	}
+}
+
+export const userUpdate = (firstName, lastName) => {
+	return (dispatch, getState, { getFirebase, getFirestore }) => {
+		const firebase = getFirebase()
+		const firestore = getFirestore()
+		const user = firebase.auth().currentUser
+
+		firestore.collection('users').doc(user.uid).set({
+			firstName,
+			lastName,
+			initials: firstName[0] + lastName[0]
+		}).then(() => {
+			dispatch({ type: 'UPDATE_SUCCESS' })
+		}).catch(err => {
+			dispatch({ type: 'UPDATE_ERROR' })
+		})
+	}
+}
