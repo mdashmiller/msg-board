@@ -8,7 +8,8 @@ class CreatePost extends Component {
 
 	state = {
 		title: '',
-		message: ''
+		message: '',
+		formError: false
 	}
 
 	// component methods
@@ -19,12 +20,30 @@ class CreatePost extends Component {
 		})
 
 	handleSubmit = e => {
+		const { title, message } = this.state
+
+		if (!title || !message) {
+			// make sure user has filled in all 
+			// the form fields
+			this.setState({ formError: true })
+		} else {
+			// call action creator and take user
+			// to dashboard
+			this.props.createPost(this.state)
+			this.props.history.push('/')
+		}
+
 		e.preventDefault()
-		this.props.createPost(this.state)
-		this.props.history.push('/')
+	}
+
+	handleFocus = () => {
+		// clears formError message when user
+		// focuses on a form field again
+		this.setState({ formError: false })
 	}
 
 	render() {
+		const { formError } = this.state
 		const { auth } = this.props
 
 		if (!auth.uid) return <Redirect to="/signin" />
@@ -35,14 +54,24 @@ class CreatePost extends Component {
 					<h5 className="grey-text text-darken-3">Create Post</h5>
 					<div className="input-field">
 						<label htmlFor="title">Title</label>
-						<input type="text" id="title" onChange={this.handleChange} />
+						<input type="text" id="title"
+							onChange={this.handleChange}
+							onFocus={this.handleFocus}
+						/>
 					</div>
 					<div className="input-field">
 						<label htmlFor="message">Message</label>
-						<textarea id="message" className="materialize-textarea" onChange={this.handleChange}></textarea>
+						<textarea id="message" className="materialize-textarea"
+							onChange={this.handleChange}
+							onFocus={this.handleFocus}
+						>
+						</textarea>
 					</div>
 					<div className="input-field">
 						<button className="btn purple lighten-1 z-depth-0">post</button>
+						<div className="red-text center">
+							{ formError && <p>Please complete all fields</p> }
+						</div>
 					</div>
 				</form>
 			</div>

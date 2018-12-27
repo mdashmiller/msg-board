@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { authUpdate, userUpdate } from '../../store/actions/authActions'
 
 class EditProfile extends Component {
@@ -8,8 +9,12 @@ class EditProfile extends Component {
 		firstName: '',
 		lastName: '',
 		email: '',
-		formError: false,
-		submitted: false
+		userError: false,
+		emailError: false,
+		userClicked: false,
+		emailClicked: false,
+		userSubmitted: false,
+		emailSubmitted: false
 	}
 
 	// component methods
@@ -21,21 +26,44 @@ class EditProfile extends Component {
 			email
 		} = this.state
 
-		if (!firstName || !lastName || !email) {
-			// make sure user has filled in all 
-			// the form fields
-			this.setState({ formError: true })
+		if (e.target.id === 'user') {
+			// check to see which form has
+			// been submitted
+
+			// set state so any authError will
+			// display in the proper form
+			this.setState({
+				userClicked: true,
+				emailClicked: false
+			})
+
+			if (!firstName || !lastName) {
+				// make sure user has filled in all 
+				// the form fields
+				this.setState({ userError: true })
+			} else {
+				// call action creator
+				this.props.userUpdate(firstName, lastName)
+				this.submitted('user')
+			}
 		} else {
-			// call action creators
-			this.props.authUpdate(email)
-			this.props.userUpdate(firstName, lastName)
-			this.submitted()
+			this.setState({
+				userClicked: false,
+				emailClicked: true
+			})
+
+			if (!email) {
+				this.setState({ emailError: true })
+			} else {
+				this.props.authUpdate(email)
+				this.submitted('email')
+			}
 		}
 
 		e.preventDefault()
 	}
 
-	submitted = () => {
+	submitted = type => {
 		// shows a message to the user
 		// upon successful update
 		setTimeout(() => {
@@ -44,8 +72,13 @@ class EditProfile extends Component {
 			if (!this.props.authError) {
 				// if there were no database errors then display
 				// the success message for 2 seconds
-				this.setState({ submitted: true })
-				setTimeout(() => this.setState({ submitted: false }), 2000)
+				if (type === 'user') {
+					this.setState({ userSubmitted: true })
+					setTimeout(() => this.setState({ userSubmitted: false }), 2000)
+				} else {
+					this.setState({ emailSubmitted: true })
+					setTimeout(() => this.setState({ emailSubmitted: false }), 2000)
+				}
 			}
 		})
 	}
@@ -64,18 +97,33 @@ class EditProfile extends Component {
 				[e.target.id]: this.props[e.target.id]
 			})
 		}
-		// clears formError message when user
+		// clears form error message when user
 		// focuses on a form field again
-		this.setState({ formError: false })
+		this.setState({
+			userError: false,
+			emailError: false,
+			userClicked: false,
+			emailClicked: false
+		})
 	}
 
 	render() {
-		const { formError, submitted } = this.state
-		const { authError } = this.props
+		const {
+			userError,
+			emailError,
+			userClicked,
+			emailClicked,
+			userSubmitted,
+			emailSubmitted
+		} = this.state
+		const { auth, authError } = this.props
 
+		if (!auth.uid) return <Redirect to="/signin" />
+			
 		return (
 			<div className="container">
-				<form onSubmit={this.handleSubmit} className="white">
+
+				<form onSubmit={this.handleSubmit} id="user" className="white">
 					<h5 className="grey-text text-darken-3">Edit Profile</h5>
 					<div className="input-field">
 						<label htmlFor="firstName">First Name</label>
@@ -92,6 +140,20 @@ class EditProfile extends Component {
 						/>
 					</div>
 					<div className="input-field">
+						<button className="btn purple lighten-1 z-depth-0">Update Profile</button>
+						<div className="center red-text">
+							{ userError && <p>Please complete all fields</p> }
+							{ authError && userClicked && <p>{ authError }</p> }
+						</div>
+						<div className="center green-text">
+							{ !authError && userSubmitted && <p>Profile successfully updated!</p> }
+						</div>
+					</div>
+				</form>
+
+				<form onSubmit={this.handleSubmit} id="email" className="white">
+					<h5 className="grey-text text-darken-3">Update Email</h5>
+					<div className="input-field">
 						<label htmlFor="email">Email</label>
 						<input type="email" id="email" value={this.state.email}
 							onFocus={this.handleFocus}
@@ -99,24 +161,15 @@ class EditProfile extends Component {
 						/>
 					</div>
 					<div className="input-field">
-						<button className="btn purple lighten-1 z-depth-0">Update</button>
+						<button className="btn purple lighten-1 z-depth-0">Update Email</button>
+						<div className="center red-text">
+							{ emailError && <p>Please enter a complete email address</p> }
+							{ authError && emailClicked && <p>{ authError }</p> }
+						</div>
+						<div className="center green-text">
+							{ !authError && emailSubmitted && <p>Email successfully updated!</p> }
+						</div>
 					</div>
-				{ formError &&
-					<div className="center red-text">
-						<p>Please complete all fields</p>
-					</div>
-				}
-				{ authError &&
-					<div className="center red-text">
-						<p>We're having a little trouble on our end.</p>
-						<p>Please try again later.</p>
-					</div>
-				}
-				{ !authError && submitted &&
-					<div className="center green-text">
-						<p>Profile successfully updated!</p>
-					</div>
-				}
 				</form>
 			</div>
 		)
@@ -124,7 +177,9 @@ class EditProfile extends Component {
 }
 
 const mapStateToProps = state => {
+	console.log(state)
 	return {
+		auth: state.firebase.auth,
 		firstName: state.firebase.profile.firstName,
 		lastName: state.firebase.profile.lastName,
 		email: state.firebase.auth.email,

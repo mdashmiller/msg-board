@@ -54,9 +54,11 @@ export const authUpdate = email => {
 		user.updateEmail(email).then(() => {
 			console.log('update success')
 			dispatch({ type: 'UPDATE_SUCCESS' })
+			// dispatch({ type: 'UPDATE_ERROR' })
+
 		}).catch(err => {
 			console.log('update error')
-			dispatch({ type: 'UPDATE_ERROR' })
+			dispatch({ type: 'UPDATE_ERROR', err })
 		})
 	}
 }
@@ -73,8 +75,10 @@ export const userUpdate = (firstName, lastName) => {
 			initials: firstName[0] + lastName[0]
 		}).then(() => {
 			dispatch({ type: 'UPDATE_SUCCESS' })
+			// dispatch({ type: 'UPDATE_ERROR' })
+
 		}).catch(err => {
-			dispatch({ type: 'UPDATE_ERROR' })
+			dispatch({ type: 'UPDATE_ERROR', err })
 		})
 	}
 }

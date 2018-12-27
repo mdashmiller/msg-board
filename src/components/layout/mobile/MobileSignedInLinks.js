@@ -15,7 +15,7 @@ const MobileSignedInLinks = ({ showOrHideMenu, signOut }) => {
 		<ul className="mobile-links">
 			<li><NavLink to="/create" onClick={() => handleClick(true)}>New Post</NavLink></li>
 			<li><NavLink to="/signin" onClick={() => handleClick(false)}>Log Out</NavLink></li>
-			<li><NavLink to="/" onClick={() => handleClick(true)}>My Profile</NavLink></li>
+			<li><NavLink to="/edit" onClick={() => handleClick(true)}>My Profile</NavLink></li>
 		</ul>
 	)
 }
