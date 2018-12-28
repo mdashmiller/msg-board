@@ -53,17 +53,17 @@ export const authUpdate = email => {
 
 		user.updateEmail(email).then(() => {
 			console.log('update success')
-			dispatch({ type: 'UPDATE_SUCCESS' })
+			dispatch({ type: 'UPDATE_AUTH_SUCCESS' })
 			// dispatch({ type: 'UPDATE_ERROR' })
 
 		}).catch(err => {
 			console.log('update error')
-			dispatch({ type: 'UPDATE_ERROR', err })
+			dispatch({ type: 'UPDATE_AUTH_ERROR', err })
 		})
 	}
 }
 
-export const userUpdate = (firstName, lastName) => {
+export const editProfile = (firstName, lastName) => {
 	return (dispatch, getState, { getFirebase, getFirestore }) => {
 		const firebase = getFirebase()
 		const firestore = getFirestore()
@@ -74,11 +74,9 @@ export const userUpdate = (firstName, lastName) => {
 			lastName,
 			initials: firstName[0] + lastName[0]
 		}).then(() => {
-			dispatch({ type: 'UPDATE_SUCCESS' })
-			// dispatch({ type: 'UPDATE_ERROR' })
-
+			dispatch({ type: 'EDIT_PROFILE_SUCCESS' })
 		}).catch(err => {
-			dispatch({ type: 'UPDATE_ERROR', err })
+			dispatch({ type: 'EDIT_PROFILE_ERROR', err })
 		})
 	}
 }

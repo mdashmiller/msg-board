@@ -1,5 +1,7 @@
 const initState = {
-	authError: null
+	authError: null,
+	editProfileError: null,
+	updateAuthError: null
 }
 
 const authReducer = (state = initState, action) => {
@@ -31,17 +33,30 @@ const authReducer = (state = initState, action) => {
 				...state,
 				authError: action.err.message
 			}
-		case 'UPDATE_SUCCESS':
-			console.log('successful update')
+		case 'UPDATE_AUTH_SUCCESS':
+			console.log('successful auth update')
 			return {
 				...state,
-				authError: null
+				updateAuthError: null
 			}
-		case 'UPDATE_ERROR':
-			console.log('update error', action)
+		case 'UPDATE_AUTH_ERROR':
+			console.log('update auth error')
 			return {
 				...state,
-				authError: action.err.message
+				updateAuthError: action.err.message
+			}
+		case 'EDIT_PROFILE_SUCCESS':
+			console.log('edit profile success')
+			return {
+				...state,
+				editProfileError: null
+			}
+		case 'EDIT_PROFILE_ERROR':
+			console.log('edit profile error')
+			return {
+				...state,
+				editProfileError: action.err.message
+				// editProfileError: 'authError'
 			}
 		default:
 			return state
