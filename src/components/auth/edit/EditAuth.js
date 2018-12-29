@@ -7,7 +7,9 @@ class EditAuth extends Component {
 	state = {
 		email: '',
 		formError: false,
-		submitted: false
+		submitClicked: false,
+		submitSuccess: false,
+		updateAuthError: null
 	}
 
 	// component methods
@@ -29,7 +31,12 @@ class EditAuth extends Component {
 
 		// clears error message when user
 		// focuses on a form field
-		this.setState({ formError: false })
+		this.setState({
+			formError: false,
+			submitClicked: false,
+			submitSuccess: false,
+			updateAuthError: null
+		})
 	}
 
 	handleSubmit = e => {
@@ -41,21 +48,43 @@ class EditAuth extends Component {
 			this.setState({ formError: true })
 		} else {
 			// call action creator
-			new Promise(resolve => {
-				this.props.authUpdate(email)
-				resolve()
-			}).then(() => this.submitted())
+			this.props.authUpdate(email)
+			this.setState({ submitClicked: true })
 		}
 
 		e.preventDefault()
 	}
+		
+	submitSuccess = () => {
+		this.setState({
+			submitClicked: false,
+			submitSuccess: true
+		})
+		setTimeout(() => this.setState({ submitSuccess: false }), 2000)
+	}
 
-	submitted = () => {
-		// shows a message to the user
-		// upon successful update
-		if (!this.props.updateAuthError) {
-			this.setState({ submitted: true })
-			setTimeout(() => this.setState({ submitted: false }), 2000)
+	// lifecycle hooks
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.updateAuthError !== prevProps.updateAuthError) {
+			// if there is a new updateAuthError set it in state
+			this.setState({ updateAuthError: this.props.updateAuthError })
+		}
+
+		if (!this.state.updateAuthError
+			&& this.props.updateAuthError
+			&& this.props.updateAuthError !== prevProps.updateAuthError) {
+				// if updateAuthError in state is null and the component receives a
+				// a different updateAuthError than before or a new occurance 
+				// of the same updateAuthError set it in state
+				this.setState({ updateAuthError: this.props.updateAuthError })
+		}
+
+		if (!this.state.updateAuthError && this.state.submitClicked) {
+			// if the user has clicked submit and there is no
+			// updateAuthError tell the component the
+			// update was a success
+			this.submitSuccess()
 		}
 	}
 
@@ -63,10 +92,10 @@ class EditAuth extends Component {
 		const {
 			email,
 			formError,
-			submitted
+			submitSuccess,
+			updateAuthError
 		} = this.state
-		const { updateAuthError } = this.props
-
+		
 		return (
 			<form onSubmit={this.handleSubmit} id="email" className="white">
 				<h5 className="grey-text text-darken-3">Update Email</h5>
@@ -81,10 +110,10 @@ class EditAuth extends Component {
 					<button className="btn purple lighten-1 z-depth-0">Update Email</button>
 					<div className="center red-text">
 						{ formError && <p>Please enter a complete email address</p> }
-						{ updateAuthError && <p>{ updateAuthError }</p> }
+						{ updateAuthError && <p>{ updateAuthError.message }</p> }
 					</div>
 					<div className="center green-text">
-						{ !updateAuthError && submitted && <p>Email successfully updated!</p> }
+						{ !updateAuthError && submitSuccess && <p>Email successfully updated!</p> }
 					</div>
 				</div>
 			</form>

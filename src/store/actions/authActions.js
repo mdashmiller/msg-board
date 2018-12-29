@@ -54,8 +54,6 @@ export const authUpdate = email => {
 		user.updateEmail(email).then(() => {
 			console.log('update success')
 			dispatch({ type: 'UPDATE_AUTH_SUCCESS' })
-			// dispatch({ type: 'UPDATE_ERROR' })
-
 		}).catch(err => {
 			console.log('update error')
 			dispatch({ type: 'UPDATE_AUTH_ERROR', err })
