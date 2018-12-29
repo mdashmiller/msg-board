@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { editProfile } from '../../../store/actions/authActions'
+import PropTypes from 'prop-types'
 
 class EditProfile extends Component {
 
@@ -142,6 +143,16 @@ const mapDispatchToProps = dispatch => {
 	return {
 		editProfile: (firstName, lastName) => dispatch(editProfile(firstName, lastName))
 	}
+}
+
+EditProfile.propTypes = {
+	firstName: PropTypes.string,
+	lastName: PropTypes.string,
+	editProfileError: PropTypes.shape({
+		code: PropTypes.string,
+		message: PropTypes.string.isRequired,
+	}),
+	editProfile: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfile)
