@@ -8,7 +8,9 @@ class EditProfile extends Component {
 		firstName: '',
 		lastName: '',
 		formError: false,
-		submitted: false
+		submitClicked: false,
+		submitSuccess: false,
+		editProfileError: null
 	}
 
 	// component methods
@@ -30,7 +32,12 @@ class EditProfile extends Component {
 
 		// clears error message when user
 		// focuses on a form field
-		this.setState({ formError: false })
+		this.setState({
+			formError: false,
+			submitClicked: false,
+			submitSuccess: false,
+			editProfileError: null
+		})
 	}
 
 	handleSubmit = e => {
@@ -42,21 +49,43 @@ class EditProfile extends Component {
 			this.setState({ formError: true })
 		} else {
 			// call action creator
-			new Promise(resolve => {
-				this.props.editProfile(firstName, lastName)
-				resolve()
-			}).then(() => this.submitted())
+			this.props.editProfile(firstName, lastName)
+			this.setState({ submitClicked: true })
 		}
 
 		e.preventDefault()
 	}
 
-	submitted = () => {
-		// shows a message to the user
-		// upon successful update
-		if (!this.props.editProfileError) {
-			this.setState({ submitted: true })
-			setTimeout(() => this.setState({ submitted: false }), 2000)
+	submitSuccess = () => {
+		this.setState({
+			submitClicked: false,
+			submitSuccess: true
+		})
+		setTimeout(() => this.setState({ submitSuccess: false }), 2000)
+	}
+
+	// lifecycle hooks
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.editProfileError !== prevProps.editProfileError) {
+			// if there is a new editProfileError set it in state
+			this.setState({ editProfileError: this.props.editProfileError })
+		}
+
+		if (!this.state.editProfileError
+			&& this.props.editProfileError
+			&& this.props.editProfileError !== prevProps.editProfileError) {
+				// if editProfileError in state is null and the component receives a
+				// a different editProfileError than before or a new occurance 
+				// of the same editProfileError set it in state
+				this.setState({ editProfileError: this.props.editProfileError })
+		}
+
+		if (!this.state.editProfileError && this.state.submitClicked) {
+			// if the user has clicked submit and there is no
+			// editProfileError tell the component the
+			// update was a success
+			this.submitSuccess()
 		}
 	}
 
@@ -65,23 +94,23 @@ class EditProfile extends Component {
 			firstName,
 			lastName,
 			formError,
-			submitted
+			submitSuccess,
+			editProfileError 
 		} = this.state
-		const { editProfileError } = this.props
 
 		return (
 			<form onSubmit={this.handleSubmit} id="user" className="white">
 				<h5 className="grey-text text-darken-3">Edit Profile</h5>
 				<div className="input-field">
 					<label htmlFor="firstName">First Name</label>
-					<input type="text" id="firstName" value={firstName}
+					<input type="text" id="firstName" className="field" value={firstName}
 						onFocus={this.handleFocus}
 						onChange={this.handleChange}
 					/>
 				</div>
 				<div className="input-field">
 					<label htmlFor="lastName">Last Name</label>
-					<input type="text" id="lastName" value={lastName}
+					<input type="text" id="lastName" className="field" value={lastName}
 						onFocus={this.handleFocus}
 						onChange={this.handleChange}
 					/>
@@ -90,10 +119,10 @@ class EditProfile extends Component {
 					<button className="btn purple lighten-1 z-depth-0">Update Profile</button>
 					<div className="center red-text">
 						{ formError && <p>Please complete all fields</p> }
-						{ editProfileError && <p>{ editProfileError }</p> }
+						{ editProfileError && <p>{ editProfileError.message }</p> }
 					</div>
 					<div className="center green-text">
-						{ !editProfileError && submitted && <p>Profile successfully updated!</p> }
+						{ !editProfileError && submitSuccess && <p>Profile successfully updated!</p> }
 					</div>
 				</div>
 			</form>

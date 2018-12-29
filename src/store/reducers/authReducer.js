@@ -43,7 +43,7 @@ const authReducer = (state = initState, action) => {
 			console.log('update auth error')
 			return {
 				...state,
-				updateAuthError: action.err.message
+				updateAuthError: action.err
 			}
 		case 'EDIT_PROFILE_SUCCESS':
 			console.log('edit profile success')
@@ -55,8 +55,7 @@ const authReducer = (state = initState, action) => {
 			console.log('edit profile error')
 			return {
 				...state,
-				editProfileError: action.err.message
-				// editProfileError: 'authError'
+				editProfileError: action.err
 			}
 		default:
 			return state

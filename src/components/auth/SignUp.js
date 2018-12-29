@@ -59,28 +59,28 @@ class SignUp extends Component {
 					<h5 className="grey-text text-darken-3">Sign Up</h5>
 					<div className="input-field">
 						<label htmlFor="firstName">First Name</label>
-						<input type="text" id="firstName"
+						<input type="text" id="firstName" className="field"
 							onChange={this.handleChange}
 							onFocus={this.handleFocus}
 						/>
 					</div>
 					<div className="input-field">
 						<label htmlFor="lastName">Last Name</label>
-						<input type="text" id="lastName"
+						<input type="text" id="lastName" className="field"
 							onChange={this.handleChange}
 							onFocus={this.handleFocus}
 						/>
 					</div>
 					<div className="input-field">
 						<label htmlFor="email">Email</label>
-						<input type="email" id="email"
+						<input type="email" id="email" className="field"
 							onChange={this.handleChange}
 							onFocus={this.handleFocus}
 						/>
 					</div>
 					<div className="input-field">
 						<label htmlFor="password">Password</label>
-						<input type="password" id="password"
+						<input type="password" id="password" className="field"
 							onChange={this.handleChange}
 							onFocus={this.handleFocus}
 						/>
