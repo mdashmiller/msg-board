@@ -15,6 +15,11 @@ form h5 {
 	margin: 20px 0;
 }
 
+.field:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 30px rgba(243,229,245,0.5) inset !important;
+    transition: 0s !important;
+}
+
 .burger {
 	background: transparent;
 	border: none;

@@ -103,14 +103,14 @@ class EditProfile extends Component {
 				<h5 className="grey-text text-darken-3">Edit Profile</h5>
 				<div className="input-field">
 					<label htmlFor="firstName">First Name</label>
-					<input type="text" id="firstName" value={firstName}
+					<input type="text" id="firstName" className="field" value={firstName}
 						onFocus={this.handleFocus}
 						onChange={this.handleChange}
 					/>
 				</div>
 				<div className="input-field">
 					<label htmlFor="lastName">Last Name</label>
-					<input type="text" id="lastName" value={lastName}
+					<input type="text" id="lastName" className="field" value={lastName}
 						onFocus={this.handleFocus}
 						onChange={this.handleChange}
 					/>

@@ -54,14 +54,14 @@ class CreatePost extends Component {
 					<h5 className="grey-text text-darken-3">Create Post</h5>
 					<div className="input-field">
 						<label htmlFor="title">Title</label>
-						<input type="text" id="title"
+						<input type="text" id="title" className="field"
 							onChange={this.handleChange}
 							onFocus={this.handleFocus}
 						/>
 					</div>
 					<div className="input-field">
 						<label htmlFor="message">Message</label>
-						<textarea id="message" className="materialize-textarea"
+						<textarea id="message" className="materialize-textarea field"
 							onChange={this.handleChange}
 							onFocus={this.handleFocus}
 						>

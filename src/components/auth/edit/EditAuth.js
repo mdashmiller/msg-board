@@ -95,13 +95,13 @@ class EditAuth extends Component {
 			submitSuccess,
 			updateAuthError
 		} = this.state
-		
+
 		return (
 			<form onSubmit={this.handleSubmit} id="email" className="white">
 				<h5 className="grey-text text-darken-3">Update Email</h5>
 				<div className="input-field">
 					<label htmlFor="email">Email</label>
-					<input type="email" id="email" value={email}
+					<input type="email" id="email" className="field" value={email}
 						onFocus={this.handleFocus}
 						onChange={this.handleChange}
 					/>
