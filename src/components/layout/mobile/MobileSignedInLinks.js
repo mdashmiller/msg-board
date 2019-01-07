@@ -4,11 +4,11 @@ import { connect } from 'react-redux'
 import { signOut } from '../../../store/actions/authActions'
 import PropTypes from 'prop-types'
 
-const MobileSignedInLinks = ({ showOrHideMenu, signOut }) => {
+const MobileSignedInLinks = ({ toggleMobileNav, signOut }) => {
 
 	const handleClick = link => {
 		!link && signOut()
-		showOrHideMenu()
+		toggleMobileNav()
 	}
 
 	return (
@@ -27,7 +27,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 MobileSignedInLinks.propTypes = {
-	showOrHideMenu: PropTypes.func.isRequired,
+	toggleMobileNav: PropTypes.func.isRequired,
 	signOut: PropTypes.func.isRequired
 }
 

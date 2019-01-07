@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 const Notifications = props => {
@@ -27,6 +28,12 @@ const Notifications = props => {
 	)
 }
 
+const mapStateToProps = state => {
+	return {
+		notifications: state.firestore.ordered.notifications
+	}
+}
+
 Notifications.propTypes = {
 	notifications: PropTypes.arrayOf(PropTypes.shape({
 		content: PropTypes.string.isRequired,
@@ -39,4 +46,4 @@ Notifications.propTypes = {
 	}))
 }
 
-export default Notifications
+export default connect(mapStateToProps)(Notifications)
