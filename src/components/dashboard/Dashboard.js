@@ -9,18 +9,19 @@ import PropTypes from 'prop-types'
 
 class Dashboard extends Component {
 	render() {
-		const { posts, auth, notifications } = this.props
+		const { posts, auth } = this.props
 
 		if (!auth.uid) return <Redirect to="/signin" />
 			
 		return (
 			<div className="dashboard container">
 				<div className="row">
-					<div className="col s12 m6">
+					<div className="col s12 l6">
 						<PostList posts={posts} />
 					</div>
-					<div className="col s12 m5 offset-m1">
-						<Notifications notifications={notifications} />
+					{/* desktop notifications */}
+					<div className="col l5 offset-l1 hide-on-med-and-down">
+						<Notifications />
 					</div>
 				</div>
 			</div>
@@ -31,8 +32,7 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
 	return {
 		posts: state.firestore.ordered.posts,
-		auth: state.firebase.auth,
-		notifications: state.firestore.ordered.notifications
+		auth: state.firebase.auth
 	}
 }
 
@@ -52,16 +52,7 @@ Dashboard.propTypes = {
 	auth: PropTypes.shape({
 		isEmpty: PropTypes.bool.isRequired,
 		isLoaded: PropTypes.bool.isRequired
-	}).isRequired,
-	notifications: PropTypes.arrayOf(PropTypes.shape({
-		content: PropTypes.string.isRequired,
-		id: PropTypes.string,
-		time: PropTypes.shape({
-			nanoseconds: PropTypes.number.isRequired,
-			seconds: PropTypes.number.isRequired
-		}).isRequired,
-		user: PropTypes.string.isRequired
-	}))
+	}).isRequired
 }
 
 export default compose(
