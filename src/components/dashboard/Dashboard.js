@@ -20,7 +20,7 @@ class Dashboard extends Component {
 						<PostList posts={posts} />
 					</div>
 					{/* desktop notifications */}
-					<div className="col l5 offset-l1 hide-on-med-and-down">
+					<div className="col l5 offset-l1 hide-on-med-and-down white desktop-notes">
 						<Notifications />
 					</div>
 				</div>
