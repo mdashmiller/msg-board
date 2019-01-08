@@ -78,6 +78,33 @@ form h5 {
 	z-index: 1;
 }
 
+.note-card {
+	width: 36vw;
+	margin: 8px auto 14px;
+}
+
+.note-card-title {
+	margin: 1rem 0 1.5rem 7vw;
+}
+
+.desktop-notes {
+	margin-top: 1.6rem;
+}
+
+.desktop-notes .note-card {
+	width: auto;
+	margin: 0;
+}
+
+.desktop-notes .note-card-title {
+	color: #9c27b0 !important;
+	margin: 1rem 0 1rem 1vw;
+}
+
+.desktop-notes .card-content {
+	padding: 12px;
+}
+
 /*change materialize form field default colors*/
 input[type=text]:not(.browser-default):focus:not([readonly]),
 input[type=email]:not(.browser-default):focus:not([readonly]),
