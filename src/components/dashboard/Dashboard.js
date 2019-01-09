@@ -58,7 +58,6 @@ Dashboard.propTypes = {
 export default compose(
 	connect(mapStateToProps),
 	firestoreConnect([
-		{ collection: 'posts', orderBy: ['createdAt', 'desc'] },
-		{ collection: 'notifications', limit: 3, orderBy: ['time', 'desc'] }
+		{ collection: 'posts', orderBy: ['createdAt', 'desc'] }
 	])
 )(Dashboard)
