@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import NotificationsPanel from './NotificationsPanel'
 import Notifications from './Notifications'
 import PostList from '../posts/PostList'
 import { connect } from 'react-redux'
@@ -9,16 +10,22 @@ import PropTypes from 'prop-types'
 
 class Dashboard extends Component {
 	render() {
-		const { posts, auth } = this.props
+		const { posts, auth, mobileNotesVisible } = this.props
 
 		if (!auth.uid) return <Redirect to="/signin" />
 			
 		return (
-			<div className="dashboard container">
+			<div className={`dashboard container ${mobileNotesVisible ? 'darken' : null}`}>
 				<div className="row">
 					<div className="col s12 l6">
-						<PostList posts={posts} />
+						<PostList posts={posts} mobileNotesVisible={mobileNotesVisible} />
 					</div>
+
+					{/* mobile notifications */}
+					<div className={!mobileNotesVisible ? 'hidden' : null}>
+						<NotificationsPanel />
+					</div>
+
 					{/* desktop notifications */}
 					<div className="col l5 offset-l1 hide-on-med-and-down white desktop-notes">
 						<Notifications />
@@ -52,7 +59,8 @@ Dashboard.propTypes = {
 	auth: PropTypes.shape({
 		isEmpty: PropTypes.bool.isRequired,
 		isLoaded: PropTypes.bool.isRequired
-	}).isRequired
+	}).isRequired,
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default compose(

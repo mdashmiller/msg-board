@@ -4,15 +4,13 @@ import DesktopSignedInLinks from './desktop/DesktopSignedInLinks'
 import DesktopSignedOutLinks from './desktop/DesktopSignedOutLinks'
 import MobileSignedInLinks from './mobile/MobileSignedInLinks'
 import MobileSignedOutLinks from './mobile/MobileSignedOutLinks'
-import NotificationsPanel from '../dashboard/NotificationsPanel'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 class Navbar extends Component {
 	 
 	state = {
-	 	mobileNavVisible: false,
-	 	mobileNotesVisible: false
+	 	mobileNavVisible: false
 	}
 
 	// component methods
@@ -27,18 +25,8 @@ class Navbar extends Component {
 	 		}
 	 	})
 
-	 toggleMobileNotes = () =>
-	 	// sets state to hide or show the
-	 	// mobile notifications panel
-	 	this.setState(prevState => {
-	 		const { mobileNotesVisible } = prevState
-	 		return {
-	 			mobileNotesVisible: !mobileNotesVisible
-	 		}
-	 	})
-
 	render() {
-		const { mobileNavVisible, mobileNotesVisible } = this.state
+		const { mobileNavVisible } = this.state
 		const { auth, profile } = this.props
 		// display a different set of links to authenticated
 		// versus unauthenticated users
@@ -64,17 +52,6 @@ class Navbar extends Component {
 						<div className="right hide-on-med-and-down">
 							{ desktopLinks }
 						</div>
-
-						{/*notifications trigger for logged-in mobile users*/}
-						{ auth.uid &&
-							<div className="right hide-on-large-only" onClick={this.toggleMobileNotes}>
-								{mobileNotesVisible ? (
-									<span className="mobile-notes-trigger">CLOSE</span>
-								) : (
-									<i className="mobile-notes-trigger material-icons right">notifications</i>
-								)}
-							</div>
-						}
 					</div>
 				</nav>
 		
@@ -83,11 +60,6 @@ class Navbar extends Component {
 					className={`mobile-menu grey darken-3 ${!mobileNavVisible ? 'hidden' : null} ${auth.uid ? 'logged-in' : null}`}
 				>
 					{ mobileLinks }
-				</div>
-
-				{/* mobile notifications */}
-				<div className={!mobileNotesVisible ? 'hidden' : null}>
-					<NotificationsPanel />
 				</div>
 			</header>
 		)

@@ -3,12 +3,12 @@ import PostSummary from './PostSummary'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-const PostList = ({ posts }) => {
+const PostList = ({ posts, mobileNotesVisible }) => {
 	return (
 		<div className="post-list section">
 			{ posts && posts.map(post =>
 				<Link to={'/post/' + post.id} key={post.id}>
-					<PostSummary post={post} />
+					<PostSummary post={post} mobileNotesVisible={mobileNotesVisible} />
 				</Link>
 			)}
 		</div>
@@ -27,7 +27,8 @@ PostList.propTypes = {
 		id: PropTypes.string.isRequired,
 		message: PropTypes.string.isRequired,
 		title: PropTypes.string.isRequired
-	}))
+	})),
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default PostList

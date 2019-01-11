@@ -59,7 +59,14 @@ form h5 {
 	margin-bottom: 28px;
 }
 
-.mobile-notes-trigger {
+div.notes-trigger {
+	position: fixed;
+	top: 1.5rem;
+	right: 6.2rem;
+}
+
+span.notes-trigger,
+i.notes-trigger {
 	cursor: pointer;
 	color: #9c27b0;
 }
@@ -103,6 +110,11 @@ form h5 {
 
 .desktop-notes .card-content {
 	padding: 12px;
+}
+
+.darken {
+	background: rgba(0,0,0,0.3);
+	pointer-events: none;
 }
 
 /*change materialize form field default colors*/
