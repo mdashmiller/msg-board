@@ -98,7 +98,7 @@ class EditAuth extends Component {
 		} = this.state
 
 		return (
-			<form onSubmit={this.handleSubmit} id="email" className="white">
+			<form onSubmit={this.handleSubmit} id="email">
 				<h5 className="grey-text text-darken-3">Update Email</h5>
 				<div className="input-field">
 					<label htmlFor="email">Email</label>
@@ -108,7 +108,7 @@ class EditAuth extends Component {
 					/>
 				</div>
 				<div className="input-field">
-					<button className="btn purple lighten-1 z-depth-0">Update Email</button>
+					<button className="btn z-depth-0">Update Email</button>
 					<div className="center red-text">
 						{ formError && <p>Please enter a complete email address</p> }
 						{ updateAuthError && <p>{ updateAuthError.message }</p> }

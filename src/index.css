@@ -1,13 +1,36 @@
+html {
+	height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
   background: #e0e0e0;
+  height: 100%;
+}
+
+#root {
+	height: 100%;
+}
+
+.App {
+	height: 100%;
+}
+
+div.main {
+	height: 100%;
+	padding-top: 12vh;
 }
 
 form {
+	background: white;
 	padding: 2px 20px 0;
 	margin-top: 46px;
+}
+
+.btn {
+	background: #9c27b0;
 }
 
 form button,
@@ -59,7 +82,15 @@ form h5 {
 	margin-bottom: 28px;
 }
 
-.mobile-notes-trigger {
+div.notes-trigger {
+	position: fixed;
+	top: 1.5rem;
+	right: 6.2rem;
+	z-index: 1;
+}
+
+span.notes-trigger,
+i.notes-trigger {
 	cursor: pointer;
 	color: #9c27b0;
 }
@@ -70,7 +101,7 @@ form h5 {
 }
 
 .notifications-panel {
-	position: absolute;
+	position: fixed;
 	top: 56px;
 	right: 0;
 	background: black;
@@ -105,6 +136,16 @@ form h5 {
 	padding: 12px;
 }
 
+.darken {
+	background: rgba(0, 0, 0, 0.3);
+	pointer-events: none;
+}
+
+.darken .brand-logo,
+.darken .burger {
+	color: grey;
+}
+
 /*change materialize form field default colors*/
 input[type=text]:not(.browser-default):focus:not([readonly]),
 input[type=email]:not(.browser-default):focus:not([readonly]),
@@ -137,10 +178,27 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
 /*////////////////////////////////////////////// media queries ///////////////////////////////////////////////////////*/
 
+/* have navbar fixed to top of window
+for smaller screens*/
+@media screen and (max-width: 992px) {
+	.nav-wrapper {
+		position: fixed;
+		top: 0;
+		z-index: 1;
+	}
+}
+
 /* keep mobile notifications panel from
 overlapping navbar */
 @media screen and (min-width: 601px) {
 	.notifications-panel {
 		top: 64px;
+	}
+}
+
+/* desktop styles */
+@media screen and (min-width: 993px) {
+	div.main {
+		padding-top: 4vh;
 	}
 }

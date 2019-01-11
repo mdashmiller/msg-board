@@ -44,13 +44,13 @@ class CreatePost extends Component {
 
 	render() {
 		const { formError } = this.state
-		const { auth } = this.props
+		const { auth, mobileNotesVisible } = this.props
 
 		if (!auth.uid) return <Redirect to="/signin" />
 
 		return (
 			<div className="container">
-				<form onSubmit={this.handleSubmit} className="white">
+				<form onSubmit={this.handleSubmit}>
 					<h5 className="grey-text text-darken-3">Create Post</h5>
 					<div className="input-field">
 						<label htmlFor="title">Title</label>
@@ -68,7 +68,7 @@ class CreatePost extends Component {
 						</textarea>
 					</div>
 					<div className="input-field">
-						<button className="btn purple lighten-1 z-depth-0">post</button>
+						<button className={`btn z-depth-0 ${mobileNotesVisible ? 'darken' : null}`}>post</button>
 						<div className="red-text center">
 							{ formError && <p>Please complete all fields</p> }
 						</div>
@@ -123,7 +123,8 @@ CreatePost.propTypes = {
 		}).isRequired,
 		uid: PropTypes.string.isRequired
 	}).isRequired,
-	createPost: PropTypes.func.isRequired
+	createPost: PropTypes.func.isRequired,
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatePost)

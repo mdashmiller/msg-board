@@ -9,7 +9,7 @@ import PropTypes from 'prop-types'
 
 class Dashboard extends Component {
 	render() {
-		const { posts, auth } = this.props
+		const { posts, auth, mobileNotesVisible } = this.props
 
 		if (!auth.uid) return <Redirect to="/signin" />
 			
@@ -17,8 +17,9 @@ class Dashboard extends Component {
 			<div className="dashboard container">
 				<div className="row">
 					<div className="col s12 l6">
-						<PostList posts={posts} />
+						<PostList posts={posts} mobileNotesVisible={mobileNotesVisible} />
 					</div>
+
 					{/* desktop notifications */}
 					<div className="col l5 offset-l1 hide-on-med-and-down white desktop-notes">
 						<Notifications />
@@ -52,7 +53,8 @@ Dashboard.propTypes = {
 	auth: PropTypes.shape({
 		isEmpty: PropTypes.bool.isRequired,
 		isLoaded: PropTypes.bool.isRequired
-	}).isRequired
+	}).isRequired,
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default compose(

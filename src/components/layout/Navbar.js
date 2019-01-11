@@ -11,8 +11,7 @@ import PropTypes from 'prop-types'
 class Navbar extends Component {
 	 
 	state = {
-	 	mobileNavVisible: false,
-	 	mobileNotesVisible: false
+	 	mobileNavVisible: false
 	}
 
 	// component methods
@@ -27,19 +26,9 @@ class Navbar extends Component {
 	 		}
 	 	})
 
-	 toggleMobileNotes = () =>
-	 	// sets state to hide or show the
-	 	// mobile notifications panel
-	 	this.setState(prevState => {
-	 		const { mobileNotesVisible } = prevState
-	 		return {
-	 			mobileNotesVisible: !mobileNotesVisible
-	 		}
-	 	})
-
 	render() {
-		const { mobileNavVisible, mobileNotesVisible } = this.state
-		const { auth, profile } = this.props
+		const { mobileNavVisible } = this.state
+		const { auth, profile, mobileNotesVisible } = this.props
 		// display a different set of links to authenticated
 		// versus unauthenticated users
 		const desktopLinks = auth.uid ? <DesktopSignedInLinks profile={profile} /> : <DesktopSignedOutLinks />
@@ -51,7 +40,7 @@ class Navbar extends Component {
 
 		return (
 			<header>
-				<nav className="nav-wrapper grey darken-3">
+				<nav className={`nav-wrapper grey darken-3 ${mobileNotesVisible ? 'darken' : null}`}>
 					<div className="container">
 						<Link to="/" className="brand-logo">MessageBot</Link>
 		
@@ -64,17 +53,6 @@ class Navbar extends Component {
 						<div className="right hide-on-med-and-down">
 							{ desktopLinks }
 						</div>
-
-						{/*notifications trigger for logged-in mobile users*/}
-						{ auth.uid &&
-							<div className="right hide-on-large-only" onClick={this.toggleMobileNotes}>
-								{mobileNotesVisible ? (
-									<span className="mobile-notes-trigger">CLOSE</span>
-								) : (
-									<i className="mobile-notes-trigger material-icons right">notifications</i>
-								)}
-							</div>
-						}
 					</div>
 				</nav>
 		
@@ -109,7 +87,8 @@ Navbar.propTypes = {
 	profile: PropTypes.shape({
 		isEmpty: PropTypes.bool.isRequired,
 		isLoaded: PropTypes.bool.isRequired,
-	}).isRequired
+	}).isRequired,
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps)(Navbar)

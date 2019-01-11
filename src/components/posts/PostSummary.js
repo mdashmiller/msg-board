@@ -2,10 +2,10 @@ import React from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 
-const PostSummary = ({ post }) => {
+const PostSummary = ({ post, mobileNotesVisible }) => {
 	return (
 		<div className="card z-depth-0 post-summary">
-			<div className="card-content grey-text text-darken-3">
+			<div className={`card-content grey-text text-darken-3 ${mobileNotesVisible ? 'darken' : null}`}>
 				<span className="card-title">{post.title}</span>
 				<p>Posted by { post.authorFirstName } { post.authorLastName }</p>
 				<p className="grey-text">{ moment(post.createdAt.toDate()).calendar() }</p>
@@ -26,7 +26,8 @@ PostSummary.propTypes = {
 		id: PropTypes.string,
 		message: PropTypes.string.isRequired,
 		title: PropTypes.string.isRequired
-	}).isRequired
+	}).isRequired,
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default PostSummary
