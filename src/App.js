@@ -38,7 +38,7 @@ class App extends Component {
 		return (
 			<BrowserRouter>
 				  	<div className="App">
-						<Navbar />
+						<Navbar mobileNotesVisible={mobileNotesVisible} />
 
 						{/* trigger to show or hide mobile
 						notifications for logged-in users*/}
@@ -52,7 +52,7 @@ class App extends Component {
 							</div>
 						}
 
-						<div className={mobileNotesVisible ? 'darken' : null}>
+						<div className={`main ${mobileNotesVisible ? 'darken' : null}`}>
 							<Switch>
 									<Route 
 										exact path="/"
@@ -61,8 +61,15 @@ class App extends Component {
 									<Route path="/post/:id" component={PostDetails} />
 									<Route path="/signin" component={SignIn} />
 									<Route path="/signup" component={SignUp} />
-									<Route path="/create" component={CreatePost} />
+									<Route
+										path="/create"
+										render={() => <CreatePost mobileNotesVisible={mobileNotesVisible} />}
+									/>
 									<Route path="/edit" component={EditHub} />
+									<Route 
+										path="/edit"
+										render={() => <EditHub mobileNotesVisible={mobileNotesVisible} />}
+									/>
 							</Switch>
 						</div>
 				  	</div>

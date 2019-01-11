@@ -100,7 +100,7 @@ class EditProfile extends Component {
 		} = this.state
 
 		return (
-			<form onSubmit={this.handleSubmit} id="user" className="white">
+			<form onSubmit={this.handleSubmit} id="user">
 				<h5 className="grey-text text-darken-3">Edit Profile</h5>
 				<div className="input-field">
 					<label htmlFor="firstName">First Name</label>
@@ -117,7 +117,7 @@ class EditProfile extends Component {
 					/>
 				</div>
 				<div className="input-field">
-					<button className="btn purple lighten-1 z-depth-0">Update Profile</button>
+					<button className="btn z-depth-0">Update Profile</button>
 					<div className="center red-text">
 						{ formError && <p>Please complete all fields</p> }
 						{ editProfileError && <p>{ editProfileError.message }</p> }

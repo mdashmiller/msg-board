@@ -4,6 +4,7 @@ import DesktopSignedInLinks from './desktop/DesktopSignedInLinks'
 import DesktopSignedOutLinks from './desktop/DesktopSignedOutLinks'
 import MobileSignedInLinks from './mobile/MobileSignedInLinks'
 import MobileSignedOutLinks from './mobile/MobileSignedOutLinks'
+import NotificationsPanel from '../dashboard/NotificationsPanel'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -27,7 +28,7 @@ class Navbar extends Component {
 
 	render() {
 		const { mobileNavVisible } = this.state
-		const { auth, profile } = this.props
+		const { auth, profile, mobileNotesVisible } = this.props
 		// display a different set of links to authenticated
 		// versus unauthenticated users
 		const desktopLinks = auth.uid ? <DesktopSignedInLinks profile={profile} /> : <DesktopSignedOutLinks />
@@ -39,7 +40,7 @@ class Navbar extends Component {
 
 		return (
 			<header>
-				<nav className="nav-wrapper grey darken-3">
+				<nav className={`nav-wrapper grey darken-3 ${mobileNotesVisible ? 'darken' : null}`}>
 					<div className="container">
 						<Link to="/" className="brand-logo">MessageBot</Link>
 		
@@ -61,6 +62,11 @@ class Navbar extends Component {
 				>
 					{ mobileLinks }
 				</div>
+
+				{/* mobile notifications */}
+				<div className={!mobileNotesVisible ? 'hidden' : null}>
+					<NotificationsPanel />
+				</div>
 			</header>
 		)
 	}
@@ -81,7 +87,8 @@ Navbar.propTypes = {
 	profile: PropTypes.shape({
 		isEmpty: PropTypes.bool.isRequired,
 		isLoaded: PropTypes.bool.isRequired,
-	}).isRequired
+	}).isRequired,
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps)(Navbar)
