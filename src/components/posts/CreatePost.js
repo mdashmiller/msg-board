@@ -9,16 +9,44 @@ class CreatePost extends Component {
 	state = {
 		title: '',
 		message: '',
+		key: '',
+		titleChars: 0,
+		messageChars: 0,
+		freezeTitle: false,
+		freezeMessage: false,
 		formError: false
 	}
 
 	// component methods
 
-	handleChange = e =>
-		this.setState({
-			[e.target.id]: e.target.value
-		})
+	handleKeyDown = e => {
+		const key = e.key
+		this.setState({ key })
+	}
 
+	handleChange = e => {
+		const { key, freezeTitle, freezeMessage } = this.state
+		const field = e.target.id
+
+		// if form field is below char limit or if user
+		// deletes a char set state appropriately
+		if (field === 'title') {
+			if (!freezeTitle || key === 'Backspace') {
+				this.setState({
+					title: e.target.value,
+					titleChars: e.target.value.length
+				})
+			}
+		} else {
+			if (!freezeMessage || key === 'Backspace') {
+				this.setState({
+					message: e.target.value,
+					messageChars: e.target.value.length
+				})
+			}
+		}
+	}
+		
 	handleSubmit = e => {
 		const { title, message } = this.state
 
@@ -42,12 +70,47 @@ class CreatePost extends Component {
 		this.setState({ formError: false })
 	}
 
+	trackChars = field => {
+		// set state to prohibit any input in
+		// a form field that exceeds the
+		// specified number of chars
+		switch (field) {
+			case 'title':
+				this.state.titleChars === 100 ? (
+					this.setState({ freezeTitle: true })
+				) : (
+					this.setState({ freezeTitle: false })
+				)
+				break
+			case 'message':
+				this.state.messageChars === 2000 ? (
+					this.setState({ freezeMessage: true })
+				) : (
+					this.setState({ freezeMessage: false })
+				)
+				break
+			default:
+				return
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		// if user has entered or deleted anything in the
+		// form call trackChars() and tell it which field
+		// has changed
+		if (prevState.titleChars !== this.state.titleChars) {
+			this.trackChars('title')
+		} else if (prevState.messageChars !== this.state.messageChars) {
+			this.trackChars('message')
+		}
+	}
+
 	render() {
-		const { formError } = this.state
+		const { title, message, formError } = this.state
 		const { auth, mobileNotesVisible } = this.props
 
 		if (!auth.uid) return <Redirect to="/signin" />
-
+		
 		return (
 			<div className="container">
 				<form onSubmit={this.handleSubmit}>
@@ -55,6 +118,8 @@ class CreatePost extends Component {
 					<div className="input-field">
 						<label htmlFor="title">Title</label>
 						<input type="text" id="title" className="field"
+							value={title}
+							onKeyDown={this.handleKeyDown}
 							onChange={this.handleChange}
 							onFocus={this.handleFocus}
 						/>
@@ -62,6 +127,8 @@ class CreatePost extends Component {
 					<div className="input-field">
 						<label htmlFor="message">Message</label>
 						<textarea id="message" className="materialize-textarea field"
+							value={message}
+							onKeyDown={this.handleKeyDown}
 							onChange={this.handleChange}
 							onFocus={this.handleFocus}
 						>
