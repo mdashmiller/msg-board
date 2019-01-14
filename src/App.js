@@ -10,6 +10,10 @@ import EditHub from './components/auth/edit/EditHub'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
+// structure of application based on a tutorial
+// series by Shuan Pelling
+// https://www.youtube.com/watch?v=Oi4v5uxTY5o&list=PL4cUxeGkcC9iWstfXntcj8f-dFZ4UtlN3
+
 class App extends Component {
 
 	state = {
