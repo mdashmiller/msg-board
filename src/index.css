@@ -56,7 +56,8 @@ form h5 {
 
 .mobile-menu {
 	padding-left: 24px;
-	position: absolute;
+	position: fixed;
+	top: 56px;
 	width: 100%;
 	box-shadow: 0 2px 2px #9e9e9e;
 	z-index: 1;
@@ -188,10 +189,14 @@ for smaller screens*/
 	}
 }
 
-/* keep mobile notifications panel from
-overlapping navbar */
+/* keep mobile notifications panel and mobile
+nave menu from overlapping navbar */
 @media screen and (min-width: 601px) {
 	.notifications-panel {
+		top: 64px;
+	}
+
+	.mobile-menu {
 		top: 64px;
 	}
 }
