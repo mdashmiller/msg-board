@@ -85,8 +85,8 @@ form h5 {
 
 div.notes-trigger {
 	position: fixed;
-	top: 1.5rem;
-	right: 6.2rem;
+	top: 2.5vh;
+	right: 7.5vw;
 	z-index: 1;
 }
 
