@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 const PostSummary = ({ post, mobileNotesVisible }) => {
 	return (
-		<div className="card z-depth-0 post-summary">
+		<div className="card post-summary">
 			<div className={`card-content grey-text text-darken-3 ${mobileNotesVisible ? 'darken' : null}`}>
 				<span className="card-title">{post.title}</span>
 				<p>Posted by { post.authorFirstName } { post.authorLastName }</p>

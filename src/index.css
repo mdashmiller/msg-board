@@ -1,46 +1,17 @@
-html {
-	height: 100%;
-}
-
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  background: #e0e0e0;
-  height: 100%;
+  background: url(./img/cork-board.jpg);
+  background-repeat: repeat;
 }
 
-#root {
-	height: 100%;
-}
-
-.App {
-	height: 100%;
+nav {
+	font-family: 'Coiny', Arial, sans-serif;
+	text-transform: uppercase;
 }
 
 div.main {
-	height: 100%;
 	padding-top: 12vh;
-}
-
-form {
-	background: white;
-	padding: 2px 20px 0;
-	margin-top: 46px;
-}
-
-.btn {
-	background: #9c27b0;
-}
-
-form button,
-form h5 {
-	margin: 20px 0;
-}
-
-.field:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 30px rgba(243,229,245,0.5) inset !important;
-    transition: 0s !important;
 }
 
 .burger {
@@ -101,6 +72,26 @@ i.notes-trigger {
 	animation-duration: 0.2s;
 }
 
+.card,
+.desktop-notes {
+	background: #f9ff97;
+}
+
+.card-title {
+	font-family: 'Architects Daughter', Arial, sans-serif;
+	text-transform: uppercase;
+	color: #9c27b0;
+}
+
+.card-content {
+	font-family: 'Architects Daughter', Arial, sans-serif;
+	font-size: 1.3rem;
+}
+
+.post-details .card:nth-child(2) .card-content {
+	padding: 14px 12px 12px 24px;
+}
+
 .notifications-panel {
 	position: fixed;
 	top: 56px;
@@ -116,6 +107,8 @@ i.notes-trigger {
 }
 
 .note-card-title {
+	font-family: 'Architects Daughter', Arial, sans-serif;
+	text-transform: uppercase;
 	margin: 1rem 0 1.5rem 7vw;
 }
 
@@ -135,6 +128,32 @@ i.notes-trigger {
 
 .desktop-notes .card-content {
 	padding: 12px;
+}
+
+form {
+	background: #f9ff97;
+	padding: 2px 20px 0;
+	margin-top: 46px;
+	box-shadow: 1px 1px 1.8px grey;
+}
+
+form h4 {
+	font-family: 'Architects Daughter', Arial, sans-serif;
+	color: #9c27b0;
+}
+
+.btn {
+	background: #9c27b0;
+}
+
+form button,
+form h5 {
+	margin: 20px 0;
+}
+
+.field:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 30px rgba(243,229,245,0.5) inset !important;
+    transition: 0s !important;
 }
 
 .darken {

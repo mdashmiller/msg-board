@@ -42,7 +42,7 @@ class Navbar extends Component {
 			<header>
 				<nav className={`nav-wrapper grey darken-3 ${mobileNotesVisible ? 'darken' : null}`}>
 					<div className="container">
-						<Link to="/" className="brand-logo">MessageBot</Link>
+						<Link to="/" className="brand-logo">POST IT!</Link>
 		
 						{/*burger button*/}
 						<button className="burger hide-on-large-only" onClick={this.toggleMobileNav}>

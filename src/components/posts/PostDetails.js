@@ -14,14 +14,17 @@ const PostDetails = props => {
 	if (post) {
 		return (
 			<div className="container section post-details">
-				<div className="card z-depth-0">
+				<div className="card">
 					<div className="card-content">
 						<span className="card-title">{post.title}</span>
 						<p>{post.message}</p>
 					</div>
-					<div className="card-action grey lighten-4 grey-text">
-						<div>Posted by {post.authorFirstName} {post.authorLastName}</div>
-						<div>{ moment(post.createdAt.toDate()).calendar() }</div>
+				</div>
+
+				<div className="card">
+					<div className="card-content grey-text text-darken-1">
+						<p>Posted by {post.authorFirstName} {post.authorLastName}</p>
+						<p>{ moment(post.createdAt.toDate()).calendar() }</p>
 					</div>
 				</div>
 			</div>
