@@ -8,7 +8,8 @@ class SignIn extends Component {
 
 	state = {
 		email: '',
-		password: ''
+		password: '',
+		error: null
 	}
 
 	// component methods
@@ -23,8 +24,33 @@ class SignIn extends Component {
 		this.props.signIn(this.state)
 	}
 
+	handleFocus = () => {
+		// clear any error message when
+		// user focuses on a form field
+		this.setState({ error: null })
+	}
+
+	// lifecycle hooks
+
+	componentDidUpdate(prevProps) {
+		// if there is a new authError set it in state
+		if (this.props.authError !== prevProps.authError) {
+			this.setState({ error: this.props.authError })
+		}
+
+		// if error in state is null and the component receives a
+		// a different authError than before or a new occurance 
+		// of the same authError set it in state
+		if (!this.state.error
+			&& this.props.authError
+			&& this.props.authError !== prevProps.authError) {
+				this.setState({ error: this.props.authError })
+		}
+	}
+
 	render() {
 		const { auth, authError } = this.props
+		const { error } = this.state
 
 		if (auth.uid) return <Redirect to="/" />
 
@@ -34,17 +60,23 @@ class SignIn extends Component {
 					<h4>Sign In</h4>
 					<div className="input-field">
 						<label htmlFor="email">Email</label>
-						<input type="email" id="email" className="field" onChange={this.handleChange} />
+						<input type="email" id="email" className="field"
+							onChange={this.handleChange}
+							onFocus={this.handleFocus}
+						/>
 					</div>
 					<div className="input-field">
 						<label htmlFor="password">Password</label>
-						<input type="password" id="password" className="field" onChange={this.handleChange} />
+						<input type="password" id="password" className="field"
+							onChange={this.handleChange}
+							onFocus={this.handleFocus}
+						/>
 					</div>
 					<div className="input-field">
 						<button className="btn purple lighten-1 z-depth-0">Login</button>
 					</div>
 					<div className="red-text center">
-						{ authError ? <p>{authError}</p> : null }
+						{ error ? <p>{authError.message}</p> : null }
 					</div>
 				</form>
 			</div>
@@ -70,7 +102,10 @@ SignIn.propTypes = {
 		isEmpty: PropTypes.bool.isRequired,
 		isLoaded: PropTypes.bool.isRequired
 	}).isRequired,
-	authError: PropTypes.object,
+	authError: PropTypes.shape({
+		code: PropTypes.string.isRequired,
+		message: PropTypes.string.isRequired
+	}),
 	signIn: PropTypes.func.isRequired
 }
 
