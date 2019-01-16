@@ -99,7 +99,7 @@ class EditAuth extends Component {
 
 		return (
 			<form onSubmit={this.handleSubmit} id="email">
-				<h5 className="grey-text text-darken-3">Update Email</h5>
+				<h4>Update Email</h4>
 				<div className="input-field">
 					<label htmlFor="email">Email</label>
 					<input type="email" id="email" className="field" value={email}

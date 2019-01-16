@@ -21,7 +21,7 @@ class Dashboard extends Component {
 					</div>
 
 					{/* desktop notifications */}
-					<div className="col l5 offset-l1 hide-on-med-and-down white desktop-notes">
+					<div className="col l5 offset-l1 hide-on-med-and-down card desktop-notes">
 						<Notifications />
 					</div>
 				</div>

@@ -101,7 +101,7 @@ class EditProfile extends Component {
 
 		return (
 			<form onSubmit={this.handleSubmit} id="user">
-				<h5 className="grey-text text-darken-3">Edit Profile</h5>
+				<h4>Edit Profile</h4>
 				<div className="input-field">
 					<label htmlFor="firstName">First Name</label>
 					<input type="text" id="firstName" className="field" value={firstName}

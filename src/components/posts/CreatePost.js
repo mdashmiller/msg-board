@@ -114,7 +114,7 @@ class CreatePost extends Component {
 		return (
 			<div className="container">
 				<form onSubmit={this.handleSubmit}>
-					<h5 className="grey-text text-darken-3">Create Post</h5>
+					<h4>Create Post</h4>
 					<div className="input-field">
 						<label htmlFor="title">Title</label>
 						<input type="text" id="title" className="field"
