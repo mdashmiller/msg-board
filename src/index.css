@@ -142,13 +142,20 @@ form h4 {
 	color: #9c27b0;
 }
 
-.btn {
+.btn,
+.btn:hover,
+.btn:focus {
 	background: #9c27b0;
 }
 
 form button,
-form h5 {
+form h4 {
 	margin: 20px 0;
+}
+
+form .red-text p {
+	padding-bottom: 1.5em;
+	font-size: 1.2em;
 }
 
 .field:-webkit-autofill {
