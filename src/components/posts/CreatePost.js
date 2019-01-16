@@ -191,7 +191,8 @@ CreatePost.propTypes = {
 		uid: PropTypes.string.isRequired
 	}).isRequired,
 	createPost: PropTypes.func.isRequired,
-	mobileNotesVisible: PropTypes.bool.isRequired
+	mobileNotesVisible: PropTypes.bool.isRequired,
+	history: PropTypes.obj
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatePost)

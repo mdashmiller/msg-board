@@ -67,7 +67,7 @@ class App extends Component {
 									<Route path="/signup" component={SignUp} />
 									<Route
 										path="/create"
-										render={() => <CreatePost mobileNotesVisible={mobileNotesVisible} />}
+										render={props => <CreatePost { ...props } mobileNotesVisible={mobileNotesVisible} />}
 									/>
 									<Route path="/edit" component={EditHub} />
 									<Route 
