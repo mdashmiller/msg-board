@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signUp } from '../../store/actions/authActions'
+import Keys from '../../Keys'
 import PropTypes from 'prop-types'
 
 class SignUp extends Component {
@@ -35,14 +36,18 @@ class SignUp extends Component {
 		} = this.state
 		const key = e.key
 
-		// if char limit for the field has been
-		// reached, set state to display
-		// an error message
-		if (fNameFreeze && key !== 'Backspace') {
+		// if char limit for the field has been reached
+		// and user tries to enter another char set
+		// state to display an error message
+		if (fNameFreeze && !Keys.list.includes(key)) {
 			this.setState({ fNameError: true })
-		} else if (lNameFreeze && key !== 'Backspace') {
+		}
+
+		if (lNameFreeze && !Keys.list.includes(key)) {
 			this.setState({ lNameError: true })
-		} else if (emailFreeze && key !== 'Backspace') {
+		}
+
+		if (emailFreeze && !Keys.list.includes(key)) {
 			this.setState({ emailError: true })
 		}
 
@@ -58,24 +63,24 @@ class SignUp extends Component {
 		} = this.state
 		const field = e.target.id
 
-		// if form field is below char limit or if user
-		// deletes a char set state appropriately
+		// if form field is below char limit or if user types
+		// an allowed key set state appropriately
 		if (field === 'firstName') {
-			if (!fNameFreeze || key === 'Backspace') {
+			if (!fNameFreeze || Keys.list.includes(key)) {
 				this.setState({
 					firstName: e.target.value,
 					fNameChars: e.target.value.length
 				})
 			}
 		} else if (field === 'lastName') {
-			if (!lNameFreeze || key === 'Backspace') {
+			if (!lNameFreeze || Keys.list.includes(key)) {
 				this.setState({
 					lastName: e.target.value,
 					lNameChars: e.target.value.length
 				})
 			}
 		} else if (field === 'email') {
-			if (!emailFreeze || key === 'Backspace') {
+			if (!emailFreeze || Keys.list.includes(key)) {
 				this.setState({
 					email: e.target.value,
 					emailChars: e.target.value.length
@@ -85,43 +90,15 @@ class SignUp extends Component {
 			this.setState({ password: e.target.value })
 		}
 	}
-		
-	handleSubmit = e => {
-		const {
-			email,
-			password,
-			firstName,
-			lastName
-		} = this.state
-
-		if (!email || !password || !firstName || !lastName) {
-			// make sure user has filled in all 
-			// the form fields
-			this.setState({ formError: true })
-		} else {
-			// capitalize first letters of name for consistency
-			const formattedFName = firstName[0].toUpperCase() + firstName.substring(1)
-			const formattedLName = lastName[0].toUpperCase() + lastName.substring(1)
-			this.setState({
-				firstName: formattedFName,
-				lastName: formattedLName
-			})
-
-			// allow state to update and
-			// then call action creator
-			setTimeout(() => this.props.signUp(this.state))
-		}
-
-		e.preventDefault()
-	}
 
 	handleFocus = e => {
 		const field = e.target.id
-		this.setState({ field })
 
-		// clears any error messages when user
-		// focuses on a form field again
+		// sets the field currently in focus and clears
+		// any error messages when user focuses
+		// on a form field
 		this.setState({
+			field,
 			formError: false,
 			fNameError: false,
 			lNameError: false,
@@ -159,6 +136,37 @@ class SignUp extends Component {
 				return
 		}
 	}
+
+	handleSubmit = e => {
+		const {
+			email,
+			password,
+			firstName,
+			lastName
+		} = this.state
+
+		if (!email || !password || !firstName || !lastName) {
+			// make sure user has filled in all 
+			// the form fields
+			this.setState({ formError: true })
+		} else {
+			// capitalize first letters of name for consistency
+			const formattedFName = firstName[0].toUpperCase() + firstName.substring(1)
+			const formattedLName = lastName[0].toUpperCase() + lastName.substring(1)
+			this.setState({
+				firstName: formattedFName,
+				lastName: formattedLName
+			})
+
+			// allow state to update and
+			// then call action creator
+			setTimeout(() => this.props.signUp(this.state))
+		}
+
+		e.preventDefault()
+	}
+
+	// lifecycle hooks
 
 	componentDidUpdate(prevProps, prevState) {
 		// if user has entered or deleted anything in the
@@ -212,11 +220,7 @@ class SignUp extends Component {
 		const { auth, authError } = this.props
 
 		if (auth.uid) return <Redirect to="/" />
-console.log('firstName: ', this.state.firstName)
-console.log('lastName: ', this.state.lastName)
-console.log('email: ', this.state.email)
-console.log('password: ', this.state.password)
-console.log('formError: ', formError)
+
 		return (
 			<div className="container">
 				<form onSubmit={this.handleSubmit}>

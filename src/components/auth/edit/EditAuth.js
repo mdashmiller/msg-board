@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { authUpdate } from '../../../store/actions/authActions'
+import Keys from '../../../Keys'
 import PropTypes from 'prop-types'
 
 class EditAuth extends Component {
 
 	state = {
 		email: '',
+		key: '',
+		chars: 0,
+		freezeEmail: false,
+		charError: false,
 		formError: false,
 		submitClicked: false,
 		submitSuccess: false,
@@ -15,10 +20,32 @@ class EditAuth extends Component {
 
 	// component methods
 
-	handleChange = e =>
-		this.setState({
-			[e.target.id]: e.target.value
-		})
+	handleKeyDown = e => {
+		const { freezeEmail } = this.state
+		const key = e.key
+
+		// if char limit for the field has been reached
+		// and user tries to enter another char set
+		// state to display an error message
+		if (freezeEmail && !Keys.list.includes(key)) {
+			this.setState({ charError: true })
+		}
+
+		this.setState({ key })
+	}
+
+	handleChange = e => {
+		const { key, freezeEmail } = this.state
+
+		// if form field is below char limit or if user types
+		// an allowed key set state appropriately
+		if (!freezeEmail || Keys.list.includes(key)) {
+			this.setState({
+				email: e.target.value,
+				chars: e.target.value.length
+			})
+		}
+	}
 
 	handleFocus = e => {
 		if (e.target.value === '') {
@@ -33,11 +60,22 @@ class EditAuth extends Component {
 		// clears error message when user
 		// focuses on a form field
 		this.setState({
+			charError: false,
 			formError: false,
 			submitClicked: false,
 			submitSuccess: false,
 			updateAuthError: null
 		})
+	}
+
+	trackChars = () => {
+		// set state to prohibit any input that exceeds
+		// the specified number of chars
+		if (this.state.chars === 320) {
+			this.setState({ freezeEmail: true })
+		} else {
+			this.setState({ freezeEmail: false })
+		}
 	}
 
 	handleSubmit = e => {
@@ -48,7 +86,8 @@ class EditAuth extends Component {
 			// the form fields
 			this.setState({ formError: true })
 		} else {
-			// call action creator
+			// call action creator and tell component
+			// a submission has been made
 			this.props.authUpdate(email)
 			this.setState({ submitClicked: true })
 		}
@@ -57,34 +96,58 @@ class EditAuth extends Component {
 	}
 		
 	submitSuccess = () => {
+		// display a temporary message upon
+		// a successful update
 		this.setState({
 			submitClicked: false,
 			submitSuccess: true
 		})
+
 		setTimeout(() => this.setState({ submitSuccess: false }), 2000)
 	}
 
 	// lifecycle hooks
 
 	componentDidUpdate(prevProps, prevState) {
+		const {
+			chars,
+			updateAuthError,
+			submitClicked
+		} = this.state
+
+		// if user has entered or deleted anything in the
+		// form call trackChars()
+		if (prevState.chars !== chars) {
+			this.trackChars()
+		}
+
+		// clear an existing char error if user deletes a char
+		if (prevState.charError) {
+			if (chars < 320) {
+				this.setState({
+					charError: false
+				})
+			}
+		}
+		
+		// if there is a new updateAuthError set it in state
 		if (this.props.updateAuthError !== prevProps.updateAuthError) {
-			// if there is a new updateAuthError set it in state
 			this.setState({ updateAuthError: this.props.updateAuthError })
 		}
 
-		if (!this.state.updateAuthError
+		// if updateAuthError in state is null and the component receives a
+		// a different updateAuthError than before or a new occurance 
+		// of the same updateAuthError set it in state
+		if (!updateAuthError
 			&& this.props.updateAuthError
 			&& this.props.updateAuthError !== prevProps.updateAuthError) {
-				// if updateAuthError in state is null and the component receives a
-				// a different updateAuthError than before or a new occurance 
-				// of the same updateAuthError set it in state
 				this.setState({ updateAuthError: this.props.updateAuthError })
 		}
 
-		if (!this.state.updateAuthError && this.state.submitClicked) {
-			// if the user has clicked submit and there is no
-			// updateAuthError tell the component the
-			// update was a success
+		// if the user has clicked submit and there is no
+		// updateAuthError tell the component the
+		// update was a success
+		if (!updateAuthError && submitClicked) {
 			this.submitSuccess()
 		}
 	}
@@ -92,6 +155,7 @@ class EditAuth extends Component {
 	render() {
 		const {
 			email,
+			charError,
 			formError,
 			submitSuccess,
 			updateAuthError
@@ -103,6 +167,7 @@ class EditAuth extends Component {
 				<div className="input-field">
 					<label htmlFor="email">Email</label>
 					<input type="email" id="email" className="field" value={email}
+						onKeyDown={this.handleKeyDown}
 						onFocus={this.handleFocus}
 						onChange={this.handleChange}
 					/>
@@ -110,6 +175,7 @@ class EditAuth extends Component {
 				<div className="input-field">
 					<button className="btn z-depth-0">Update Email</button>
 					<div className="center red-text">
+						{ charError && <p>Max character limit reached</p> }
 						{ formError && <p>Please enter a complete email address</p> }
 						{ updateAuthError && <p>{ updateAuthError.message }</p> }
 					</div>
