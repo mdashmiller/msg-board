@@ -90,42 +90,13 @@ class SignUp extends Component {
 			this.setState({ password: e.target.value })
 		}
 	}
-		
-	handleSubmit = e => {
-		const {
-			email,
-			password,
-			firstName,
-			lastName
-		} = this.state
-
-		if (!email || !password || !firstName || !lastName) {
-			// make sure user has filled in all 
-			// the form fields
-			this.setState({ formError: true })
-		} else {
-			// capitalize first letters of name for consistency
-			const formattedFName = firstName[0].toUpperCase() + firstName.substring(1)
-			const formattedLName = lastName[0].toUpperCase() + lastName.substring(1)
-			this.setState({
-				firstName: formattedFName,
-				lastName: formattedLName
-			})
-
-			// allow state to update and
-			// then call action creator
-			setTimeout(() => this.props.signUp(this.state))
-		}
-
-		e.preventDefault()
-	}
 
 	handleFocus = e => {
 		const field = e.target.id
 
 		// sets the field currently in focus and clears
 		// any error messages when user focuses
-		// on a form field again
+		// on a form field
 		this.setState({
 			field,
 			formError: false,
@@ -165,6 +136,37 @@ class SignUp extends Component {
 				return
 		}
 	}
+
+	handleSubmit = e => {
+		const {
+			email,
+			password,
+			firstName,
+			lastName
+		} = this.state
+
+		if (!email || !password || !firstName || !lastName) {
+			// make sure user has filled in all 
+			// the form fields
+			this.setState({ formError: true })
+		} else {
+			// capitalize first letters of name for consistency
+			const formattedFName = firstName[0].toUpperCase() + firstName.substring(1)
+			const formattedLName = lastName[0].toUpperCase() + lastName.substring(1)
+			this.setState({
+				firstName: formattedFName,
+				lastName: formattedLName
+			})
+
+			// allow state to update and
+			// then call action creator
+			setTimeout(() => this.props.signUp(this.state))
+		}
+
+		e.preventDefault()
+	}
+
+	// lifecycle hooks
 
 	componentDidUpdate(prevProps, prevState) {
 		// if user has entered or deleted anything in the

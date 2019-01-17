@@ -67,29 +67,12 @@ class CreatePost extends Component {
 		}
 	}
 		
-	handleSubmit = e => {
-		const { title, message } = this.state
-
-		if (!title || !message) {
-			// make sure user has filled in all 
-			// the form fields
-			this.setState({ formError: true })
-		} else {
-			// call action creator and take user
-			// to dashboard
-			this.props.createPost(this.state)
-			this.props.history.push('/')
-		}
-
-		e.preventDefault()
-	}
-
 	handleFocus = e => {
 		const field = e.target.id
 
 		// sets the field currently in focus and clears
 		// any error messages when user focuses
-		// on a form field again
+		// on a form field
 		this.setState({
 			field,
 			formError: false,
@@ -121,6 +104,25 @@ class CreatePost extends Component {
 				return
 		}
 	}
+
+	handleSubmit = e => {
+		const { title, message } = this.state
+
+		if (!title || !message) {
+			// make sure user has filled in all 
+			// the form fields
+			this.setState({ formError: true })
+		} else {
+			// call action creator and take user
+			// to dashboard
+			this.props.createPost(this.state)
+			this.props.history.push('/')
+		}
+
+		e.preventDefault()
+	}
+
+	// lifecycle hooks
 
 	componentDidUpdate(prevProps, prevState) {
 		const {
