@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { createPost } from  '../../store/actions/postActions'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import Keys from '../../Keys'
 import PropTypes from 'prop-types'
 
 class CreatePost extends Component {
@@ -10,17 +11,36 @@ class CreatePost extends Component {
 		title: '',
 		message: '',
 		key: '',
+		field: '',
 		titleChars: 0,
 		messageChars: 0,
 		freezeTitle: false,
 		freezeMessage: false,
-		formError: false
+		formError: false,
+		titleError: false,
+		messageError: false
 	}
 
 	// component methods
 
 	handleKeyDown = e => {
+		const {
+			freezeTitle,
+			freezeMessage
+		} = this.state
 		const key = e.key
+
+		// if char limit for the field has been reached
+		// and user tries to enter another char set
+		// state to display an error message
+		if (freezeTitle && !Keys.list.includes(key)) {
+			this.setState({ titleError: true })
+		}
+
+		if (freezeMessage && !Keys.list.includes(key)) {
+			this.setState({ messageError: true })
+		}
+
 		this.setState({ key })
 	}
 
@@ -28,17 +48,17 @@ class CreatePost extends Component {
 		const { key, freezeTitle, freezeMessage } = this.state
 		const field = e.target.id
 
-		// if form field is below char limit or if user
-		// deletes a char set state appropriately
+		// if form field is below char limit or if user types
+		// an allowed key set state appropriately
 		if (field === 'title') {
-			if (!freezeTitle || key === 'Backspace') {
+			if (!freezeTitle || Keys.list.includes(key)) {
 				this.setState({
 					title: e.target.value,
 					titleChars: e.target.value.length
 				})
 			}
 		} else {
-			if (!freezeMessage || key === 'Backspace') {
+			if (!freezeMessage || Keys.list.includes(key)) {
 				this.setState({
 					message: e.target.value,
 					messageChars: e.target.value.length
@@ -64,10 +84,18 @@ class CreatePost extends Component {
 		e.preventDefault()
 	}
 
-	handleFocus = () => {
-		// clears formError message when user
-		// focuses on a form field again
-		this.setState({ formError: false })
+	handleFocus = e => {
+		const field = e.target.id
+
+		// sets the field currently in focus and clears
+		// any error messages when user focuses
+		// on a form field again
+		this.setState({
+			field,
+			formError: false,
+			titleError: false,
+			messageError: false
+		})
 	}
 
 	trackChars = field => {
@@ -95,18 +123,46 @@ class CreatePost extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		const {
+			titleChars,
+			messageChars,
+			field
+		} = this.state
+
 		// if user has entered or deleted anything in the
 		// form call trackChars() and tell it which field
 		// has changed
-		if (prevState.titleChars !== this.state.titleChars) {
+		if (prevState.titleChars !== titleChars) {
 			this.trackChars('title')
-		} else if (prevState.messageChars !== this.state.messageChars) {
+		} else if (prevState.messageChars !== messageChars) {
 			this.trackChars('message')
+		}
+
+		// clear an existing field error if user deletes a
+		// char from that field or focuses away from it
+		if (prevState.titleError) {
+			if (titleChars < 100 || field !== 'title') {
+				this.setState({
+					titleError: false
+				})
+			}
+		} else if (prevState.messageError) {
+			if (messageChars < 2000 || field !== 'message') {
+				this.setState({
+					messageError: false
+				})
+			}
 		}
 	}
 
 	render() {
-		const { title, message, formError } = this.state
+		const {
+			title,
+			message,
+			formError,
+			titleError,
+			messageError
+		} = this.state
 		const { auth, mobileNotesVisible } = this.props
 
 		if (!auth.uid) return <Redirect to="/signin" />
@@ -137,6 +193,11 @@ class CreatePost extends Component {
 					<div className="input-field">
 						<button className={`btn z-depth-0 ${mobileNotesVisible ? 'darken' : null}`}>post</button>
 						<div className="red-text center">
+							{ titleError || messageError ? (
+								<p>Max character limit reached</p>
+							) : (
+								null
+							)}
 							{ formError && <p>Please complete all fields</p> }
 						</div>
 					</div>
