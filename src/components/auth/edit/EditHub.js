@@ -5,13 +5,24 @@ import EditProfile from './EditProfile'
 import EditAuth from './EditAuth'
 import PropTypes from 'prop-types'
 
-const EditHub = ({ auth, mobileNotesVisible }) => {
+const EditHub = ({
+	auth,
+	mobileNavVisible,
+	mobileNotesVisible
+}) => {
+
 	if (!auth.uid) return <Redirect to="/signin" />
 
 	return (
 		<div className="container">
-			<EditProfile mobileNotesVisible={mobileNotesVisible} />
-			<EditAuth mobileNotesVisible={mobileNotesVisible} />
+			<EditProfile
+				mobileNavVisible={mobileNavVisible}
+				mobileNotesVisible={mobileNotesVisible}
+			/>
+			<EditAuth
+				mobileNavVisible={mobileNavVisible}
+				mobileNotesVisible={mobileNotesVisible}
+			/>
 		</div>
 	)	
 }
@@ -54,6 +65,7 @@ EditHub.propTypes = {
 		}),
 		uid: PropTypes.string
 	}).isRequired,
+	mobileNavVisible: PropTypes.bool.isRequired,
 	mobileNotesVisible: PropTypes.bool.isRequired
 }
 

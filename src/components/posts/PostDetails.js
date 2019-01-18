@@ -10,13 +10,13 @@ const PostDetails = props => {
 	const {
 		post,
 		auth,
+		mobileNavVisible,
 		mobileNotesVisible
 	} = props
 
-	// creating a conditional class to darken inactive
-	// elements when the mobile notifications
-	// panel is open
-	const darken = mobileNotesVisible ? 'darken' : null
+	// creating a conditional class to darken inactive elements
+	// when the mobile nav or notifications panel is open
+	const darken = mobileNavVisible || mobileNotesVisible ? 'darken' : null
 	
 	if (!auth.uid) return <Redirect to="/signin" />
 
@@ -101,7 +101,9 @@ PostDetails.propTypes = {
 			refreshToken: PropTypes.string.isRequired,
 		}).isRequired,
 		uid: PropTypes.string.isRequired,
-	}).isRequired
+	}).isRequired,
+	mobileNavVisible: PropTypes.bool.isRequired,
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default compose(
