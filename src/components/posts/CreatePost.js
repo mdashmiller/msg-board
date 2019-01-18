@@ -165,13 +165,17 @@ class CreatePost extends Component {
 			titleError,
 			messageError
 		} = this.state
-		const { auth, mobileNotesVisible } = this.props
+		const {
+			auth,
+			mobileNavVisible,
+			mobileNotesVisible
+		} = this.props
 
 		// creating conditional classes to darken inactive
 		// elements when the mobile notifications
-		// panel is open
-		const darkenForm = mobileNotesVisible ? 'darken-form' : null
-		const darkenButton = mobileNotesVisible ? 'darken-button' : null
+		// panel or mobile nav is open
+		const darkenForm = mobileNavVisible || mobileNotesVisible ? 'darken-form' : null
+		const darkenButton = mobileNavVisible || mobileNotesVisible ? 'darken-button' : null
 
 		if (!auth.uid) return <Redirect to="/signin" />
 		
@@ -260,6 +264,7 @@ CreatePost.propTypes = {
 		uid: PropTypes.string.isRequired
 	}).isRequired,
 	createPost: PropTypes.func.isRequired,
+	mobileNavVisible: PropTypes.bool.isRequired,
 	mobileNotesVisible: PropTypes.bool.isRequired
 }
 

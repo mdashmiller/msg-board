@@ -214,13 +214,16 @@ class EditProfile extends Component {
 			submitSuccess,
 			editProfileError 
 		} = this.state
-		const { mobileNotesVisible } = this.props
+		const {
+			mobileNavVisible,
+			mobileNotesVisible
+		} = this.props
 
 		// creating conditional classes to darken inactive
 		// elements when the mobile notifications
-		// panel is open
-		const darkenForm = mobileNotesVisible ? 'darken-form' : null
-		const darkenButton = mobileNotesVisible ? 'darken-button' : null
+		// panel or mobile nav is open
+		const darkenForm = mobileNavVisible || mobileNotesVisible ? 'darken-form' : null
+		const darkenButton = mobileNavVisible || mobileNotesVisible ? 'darken-button' : null
 
 		return (
 			<form onSubmit={this.handleSubmit} id="user" className={darkenForm}>
@@ -283,6 +286,7 @@ EditProfile.propTypes = {
 		message: PropTypes.string.isRequired,
 	}),
 	editProfile: PropTypes.func.isRequired,
+	mobileNavVisible: PropTypes.bool.isRequired,
 	mobileNotesVisible: PropTypes.bool.isRequired
 }
 

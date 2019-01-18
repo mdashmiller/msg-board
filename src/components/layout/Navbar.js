@@ -9,34 +9,23 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 class Navbar extends Component {
-	 
-	state = {
-	 	mobileNavVisible: false
-	}
-
-	// component methods
-
-	toggleMobileNav = () =>
-	 	// sets state to hide or show the
-	 	// mobile drop-down nav
-	 	this.setState(prevState => {
-	 		const { mobileNavVisible } = prevState
-	 		return {
-	 			mobileNavVisible: !mobileNavVisible
-	 		}
-	 	})
-
+	
 	render() {
-		const { mobileNavVisible } = this.state
-		const { auth, profile, mobileNotesVisible } = this.props
+		const {
+			auth,
+			profile,
+			mobileNavVisible,
+			mobileNotesVisible,
+			toggleMenu
+		} = this.props
 
 		// display a different set of links to authenticated
 		// versus unauthenticated users
 		const desktopLinks = auth.uid ? <DesktopSignedInLinks profile={profile} /> : <DesktopSignedOutLinks />
 		const mobileLinks = auth.uid ? (
-			<MobileSignedInLinks toggleMobileNav={this.toggleMobileNav} />
+			<MobileSignedInLinks toggleMenu={toggleMenu} />
 		) : (
-			<MobileSignedOutLinks toggleMobileNav={this.toggleMobileNav} />
+			<MobileSignedOutLinks toggleMenu={toggleMenu} />
 		) 
 
 		// creating a conditional class to darken inactive
@@ -51,9 +40,7 @@ class Navbar extends Component {
 						<Link to="/" className="brand-logo">POST IT!</Link>
 		
 						{/*burger button*/}
-						<button className="burger hide-on-large-only" onClick={this.toggleMobileNav}>
-							<i className="material-icons">menu</i>
-						</button>
+						
 						
 						{/*desktop menu*/}
 						<div className="right hide-on-med-and-down">
@@ -94,7 +81,9 @@ Navbar.propTypes = {
 		isEmpty: PropTypes.bool.isRequired,
 		isLoaded: PropTypes.bool.isRequired,
 	}).isRequired,
-	mobileNotesVisible: PropTypes.bool.isRequired
+	mobileNavVisible: PropTypes.bool.isRequired,
+	mobileNotesVisible: PropTypes.bool.isRequired,
+	toggleMenu: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps)(Navbar)

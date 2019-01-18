@@ -17,42 +17,69 @@ import PropTypes from 'prop-types'
 class App extends Component {
 
 	state = {
-		// when the mobile notificatios panel
-		// is open a class is added to other
+		// when the mobile notificatios panel or mobile
+		// nav is open a class is added to other
 		// components to make them inactive
+		mobileNavVisible: false,
 		mobileNotesVisible: false
 	}
 
 	// component methods
 
-	toggleMobileNotes = () =>
-		// sets state to hide or show the
-		// mobile notifications panel
-		this.setState(prevState => {
-			const { mobileNotesVisible } = prevState
-			return {
-				mobileNotesVisible: !mobileNotesVisible
-			}
-		})
+	toggleMenu = type => {
+		type === 'nav' &&
+			this.setState(prevState => {
+				const { mobileNavVisible } = prevState
+				return {
+					mobileNavVisible: !mobileNavVisible
+				}
+			})
+
+		type === 'notes' &&
+			this.setState(prevState => {
+				const { mobileNotesVisible } = prevState
+				return {
+					mobileNotesVisible: !mobileNotesVisible
+				}
+			})
+	}
 
 	render() {
-		const { mobileNotesVisible } = this.state
+		const { 
+			mobileNavVisible,
+			mobileNotesVisible 
+		} = this.state
 		const { auth } = this.props
 
 		// creating a conditional class to darken inactive
 		// elements when the mobile notifications
 		// panel is open
-		const darken = mobileNotesVisible ? 'darken' : null
+		const darken = mobileNavVisible || mobileNotesVisible ? 'darken' : null
 
 		return (
 			<BrowserRouter>
 				  	<div className="App">
-						<Navbar mobileNotesVisible={mobileNotesVisible} />
+						<Navbar
+							mobileNavVisible={mobileNavVisible}
+							mobileNotesVisible={mobileNotesVisible}
+							toggleMenu={this.toggleMenu}
+						/>
+
+						{/* burger button */}
+						<button 
+							className="burger hide-on-large-only" 
+							onClick={() => this.toggleMenu('nav')}
+						>
+							<i className="material-icons">menu</i>
+						</button>
 
 						{/* trigger to show or hide mobile
-						notifications for logged-in users*/}
+						notifications for logged-in users */}
 						{ auth.uid &&
-							<div className="notes-trigger hide-on-large-only" onClick={this.toggleMobileNotes}>
+							<div 
+								className="notes-trigger hide-on-large-only" 
+								onClick={() => this.toggleMenu('notes')}
+							>
 								{mobileNotesVisible ? (
 									<span className="notes-trigger">CLOSE</span>
 								) : (
@@ -65,21 +92,39 @@ class App extends Component {
 							<Switch>
 									<Route 
 										exact path="/"
-										render={() => <Dashboard mobileNotesVisible={mobileNotesVisible} />}
+										render={() => 
+											<Dashboard 
+												mobileNavVisible={mobileNavVisible}
+												mobileNotesVisible={mobileNotesVisible}
+											/>}
 									/>
 									<Route
 										path="/post/:id"
-										render={props => <PostDetails { ...props } mobileNotesVisible={mobileNotesVisible} />}
+										render={props =>
+											<PostDetails
+												{ ...props }
+												mobileNavVisible={mobileNavVisible}
+												mobileNotesVisible={mobileNotesVisible}
+											/>}
 									/>
 									<Route path="/signin" component={SignIn} />
 									<Route path="/signup" component={SignUp} />
 									<Route
 										path="/create"
-										render={props => <CreatePost { ...props } mobileNotesVisible={mobileNotesVisible} />}
+										render={props =>
+											<CreatePost
+												{ ...props }
+												mobileNavVisible={mobileNavVisible}
+												mobileNotesVisible={mobileNotesVisible}
+											/>}
 									/>
 									<Route 
 										path="/edit"
-										render={() => <EditHub mobileNotesVisible={mobileNotesVisible} />}
+										render={() =>
+											<EditHub
+												mobileNavVisible={mobileNavVisible}
+												mobileNotesVisible={mobileNotesVisible}
+											/>}
 									/>
 							</Switch>
 						</div>

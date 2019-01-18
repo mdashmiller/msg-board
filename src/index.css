@@ -35,6 +35,10 @@ div.main {
 	border: none;
 	cursor: pointer;
 	color: #9c27b0;
+	z-index: 1;
+	position: fixed;
+	top: 2.5vh;
+	left: 7.5vw;
 }
 
 .burger:focus {
@@ -46,7 +50,7 @@ div.main {
 	position: fixed;
 	top: 56px;
 	width: 100%;
-	box-shadow: 0 2px 2px #9e9e9e;
+	box-shadow: 0 2px 2px #333;
 	z-index: 1;
 	animation-name: drop-down;
 	animation-duration: 0.2s;
