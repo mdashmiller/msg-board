@@ -185,8 +185,17 @@ form .green-text p {
 	pointer-events: none;
 }
 
+.darken-form {
+	background: #d8dd84;
+}
+
+.darken-button {
+	background: #591565;
+}
+
 .darken .brand-logo,
-.darken .burger {
+.darken .burger,
+.darken-button {
 	color: grey;
 }
 

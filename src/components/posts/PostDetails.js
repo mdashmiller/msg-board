@@ -7,7 +7,16 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 
 const PostDetails = props => {
-	const { post, auth } = props
+	const {
+		post,
+		auth,
+		mobileNotesVisible
+	} = props
+
+	// creating a conditional class to darken inactive
+	// elements when the mobile notifications
+	// panel is open
+	const darken = mobileNotesVisible ? 'darken' : null
 	
 	if (!auth.uid) return <Redirect to="/signin" />
 
@@ -15,14 +24,16 @@ const PostDetails = props => {
 		return (
 			<div className="container section post-details">
 				<div className="card">
-					<div className="card-content">
+					<div className={`card-content ${darken}`}>
 						<span className="card-title">{post.title}</span>
 						<p>{post.message}</p>
 					</div>
 				</div>
 
 				<div className="card">
-					<div className="card-content grey-text text-darken-1">
+					<div
+						className={`card-content grey-text text-darken-1 ${darken}`}
+					>
 						<p>Posted by {post.authorFirstName} {post.authorLastName}</p>
 						<p>{ moment(post.createdAt.toDate()).calendar() }</p>
 					</div>

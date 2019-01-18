@@ -29,6 +29,7 @@ class Navbar extends Component {
 	render() {
 		const { mobileNavVisible } = this.state
 		const { auth, profile, mobileNotesVisible } = this.props
+
 		// display a different set of links to authenticated
 		// versus unauthenticated users
 		const desktopLinks = auth.uid ? <DesktopSignedInLinks profile={profile} /> : <DesktopSignedOutLinks />
@@ -38,9 +39,14 @@ class Navbar extends Component {
 			<MobileSignedOutLinks toggleMobileNav={this.toggleMobileNav} />
 		) 
 
+		// creating a conditional class to darken inactive
+		// elements when the mobile notifications
+		// panel is open
+		const darken = mobileNotesVisible ? 'darken' : null
+
 		return (
 			<header>
-				<nav className={`nav-wrapper grey darken-3 ${mobileNotesVisible ? 'darken' : null}`}>
+				<nav className={`nav-wrapper grey darken-3 ${darken}`}>
 					<div className="container">
 						<Link to="/" className="brand-logo">POST IT!</Link>
 		

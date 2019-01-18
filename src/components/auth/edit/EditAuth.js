@@ -160,9 +160,16 @@ class EditAuth extends Component {
 			submitSuccess,
 			updateAuthError
 		} = this.state
+		const { mobileNotesVisible } = this.props
+		
+		// creating conditional classes to darken inactive
+		// elements when the mobile notifications
+		// panel is open
+		const darkenForm = mobileNotesVisible ? 'darken-form' : null
+		const darkenButton = mobileNotesVisible ? 'darken-button' : null
 
 		return (
-			<form onSubmit={this.handleSubmit} id="email">
+			<form onSubmit={this.handleSubmit} id="email" className={darkenForm}>
 				<h4>Update Email</h4>
 				<div className="input-field">
 					<label htmlFor="email">Email</label>
@@ -173,7 +180,7 @@ class EditAuth extends Component {
 					/>
 				</div>
 				<div className="input-field">
-					<button className="btn z-depth-0">Update Email</button>
+					<button className={`btn z-depth-0 ${darkenButton}`}>Update Email</button>
 					<div className="center red-text">
 						{ charError && <p>Max character limit reached</p> }
 						{ formError && <p>Please enter a complete email address</p> }
@@ -207,7 +214,8 @@ EditAuth.propTypes = {
 		code: PropTypes.string,
 		message: PropTypes.string.isRequired
 	}),
-	authUpdate: PropTypes.func.isRequired
+	authUpdate: PropTypes.func.isRequired,
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditAuth)
