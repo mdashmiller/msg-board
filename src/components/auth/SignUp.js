@@ -23,7 +23,8 @@ class SignUp extends Component {
 		formError: false,
 		fNameError: false,
 		lNameError: false,
-		emailError: false
+		emailError: false,
+		mobileMenuVisible: false
 	}
 
 	// component methods
@@ -166,19 +167,34 @@ class SignUp extends Component {
 		e.preventDefault()
 	}
 
+	handleClick = e => {
+		const { mobileMenuVisible } = this.state
+
+		// if a mobile menu is open, still allow
+		// click events so a click outside the 
+		// menu will close it, but disable
+		// the form so unintentional
+		// submit events won't occur
+		if (mobileMenuVisible) {
+			e.preventDefault()
+			this.setState({ mobileMenuVisible: false })
+		}
+	}
+
 	// lifecycle hooks
 
 	componentDidUpdate(prevProps, prevState) {
-		// if user has entered or deleted anything in the
-		// form call trackChars() and tell it which field
-		// has changed
 		const {
 			fNameChars,
 			lNameChars,
 			emailChars,
 			field
 		} = this.state
+		const { mobileNavVisible } = this.props
 
+		// if user has entered or deleted anything in the
+		// form call trackChars() and tell it which field
+		// has changed
 		if (prevState.fNameChars !== fNameChars) {
 			this.trackChars('firstName')
 		} else if (prevState.lNameChars !== lNameChars) {
@@ -208,6 +224,14 @@ class SignUp extends Component {
 				})
 			}
 		}
+
+		// any time the mobile nav opens
+		// track its status in state
+		if (mobileNavVisible) {
+			if (prevProps.mobileNavVisible !== mobileNavVisible) {
+					this.setState({ mobileMenuVisible: true })
+			}
+		}
 	}
 
 	render() {
@@ -217,13 +241,22 @@ class SignUp extends Component {
 			lNameError,
 			emailError
 		} = this.state
-		const { auth, authError } = this.props
+		const {
+			auth,
+			authError,
+			mobileNavVisible
+		} = this.props
+
+		// conditional classNames to darken inactive
+		// components when mobile nav is open
+		const darkenForm = mobileNavVisible ? 'darken-form' : null
+		const darkenButton = mobileNavVisible ? 'darken-button' : null
 
 		if (auth.uid) return <Redirect to="/" />
 
 		return (
 			<div className="container">
-				<form onSubmit={this.handleSubmit}>
+				<form onSubmit={this.handleSubmit} className={darkenForm}>
 					<h4>Sign Up</h4>
 					<div className="input-field">
 						<label htmlFor="firstName">First Name</label>
@@ -261,7 +294,9 @@ class SignUp extends Component {
 						/>
 					</div>
 					<div className="input-field">
-						<button className="btn purple lighten-1 z-depth-0">Join</button>
+						<button className={`btn z-depth-0 ${darkenButton}`} onClick={this.handleClick}>
+							Join
+						</button>
 						<div className="red-text center">
 							{ authError && <p>{ authError }</p> }
 							{ formError && <p>Please complete all fields</p> }
@@ -298,7 +333,8 @@ SignUp.propTypes = {
 		isLoaded: PropTypes.bool.isRequired
 	}).isRequired,
 	authError: PropTypes.object,
-	signUp: PropTypes.func.isRequired
+	signUp: PropTypes.func.isRequired,
+	mobileNavVisible: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
