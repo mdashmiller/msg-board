@@ -20,7 +20,8 @@ class EditProfile extends Component {
 		formError: false,
 		submitClicked: false,
 		submitSuccess: false,
-		editProfileError: null
+		editProfileError: null,
+		mobileMenuVisible: false
 	}
 
 	// component methods
@@ -146,6 +147,20 @@ class EditProfile extends Component {
 		setTimeout(() => this.setState({ submitSuccess: false }), 2000)
 	}
 
+	handleClick = e => {
+		const { mobileMenuVisible } = this.state
+
+		// if a mobile menu is open, still allow
+		// click events so a click outside the 
+		// menu will close it, but disable
+		// the form so unintentional
+		// submit events won't occur
+		if (mobileMenuVisible) {
+			e.preventDefault()
+			this.setState({ mobileMenuVisible: false })
+		}
+	}
+
 	// lifecycle hooks
 
 	componentDidUpdate(prevProps, prevState) {
@@ -156,6 +171,10 @@ class EditProfile extends Component {
 			editProfileError,
 			submitClicked
 		} = this.state
+		const {
+			mobileNavVisible,
+			mobileNotesVisible
+		} = this.props
 
 		// if user has entered or deleted anything in the
 		// form call trackChars() and tell it which field
@@ -202,6 +221,15 @@ class EditProfile extends Component {
 		if (!editProfileError && submitClicked) {
 			this.submitSuccess()
 		}
+
+		// any time a mobile menu opens
+		// track its status in state
+		if (mobileNavVisible || mobileNotesVisible) {
+			if (prevProps.mobileNavVisible !== mobileNavVisible
+				|| prevProps.mobileNotesVisible !== mobileNotesVisible) {
+					this.setState({ mobileMenuVisible: true })
+			}
+		}
 	}
 
 	render() {
@@ -245,7 +273,12 @@ class EditProfile extends Component {
 					/>
 				</div>
 				<div className="input-field">
-					<button className={`btn z-depth-0 ${darkenButton}`}>Update Profile</button>
+					<button
+						className={`btn z-depth-0 ${darkenButton}`}
+						onClick={this.handleClick}
+					>
+						Update Profile
+					</button>
 					<div className="center red-text">
 						{ fNameError || lNameError ? (
 							<p>Max character limit reached</p>

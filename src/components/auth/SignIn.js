@@ -9,7 +9,8 @@ class SignIn extends Component {
 	state = {
 		email: '',
 		password: '',
-		error: null
+		error: null,
+		mobileMenuVisible: false
 	}
 
 	// component methods
@@ -30,33 +31,69 @@ class SignIn extends Component {
 		this.setState({ error: null })
 	}
 
+	handleClick = e => {
+		const { mobileMenuVisible } = this.state
+
+		// if a mobile menu is open, still allow
+		// click events so a click outside the 
+		// menu will close it, but disable
+		// the form so unintentional
+		// submit events won't occur
+		if (mobileMenuVisible) {
+			e.preventDefault()
+			this.setState({ mobileMenuVisible: false })
+		}
+	}
+
 	// lifecycle hooks
 
 	componentDidUpdate(prevProps) {
+		const {
+			authError,
+			mobileNavVisible
+		} = this.props
+
 		// if there is a new authError set it in state
-		if (this.props.authError !== prevProps.authError) {
-			this.setState({ error: this.props.authError })
+		if (authError !== prevProps.authError) {
+			this.setState({ error: authError })
 		}
 
 		// if error in state is null and the component receives a
 		// a different authError than before or a new occurance 
 		// of the same authError set it in state
 		if (!this.state.error
-			&& this.props.authError
-			&& this.props.authError !== prevProps.authError) {
-				this.setState({ error: this.props.authError })
+			&& authError
+			&& authError !== prevProps.authError) {
+				this.setState({ error: authError })
+		}
+
+		// any time the mobile nav opens
+		// track its status in state
+		if (mobileNavVisible) {
+			if (prevProps.mobileNavVisible !== mobileNavVisible) {
+					this.setState({ mobileMenuVisible: true })
+			}
 		}
 	}
 
 	render() {
-		const { auth, authError } = this.props
+		const {
+			auth,
+			authError,
+			mobileNavVisible
+		} = this.props
 		const { error } = this.state
+
+		// conditional classNames to darken inactive
+		// components when mobile nav is open
+		const darkenForm = mobileNavVisible ? 'darken-form' : null
+		const darkenButton = mobileNavVisible ? 'darken-button' : null
 
 		if (auth.uid) return <Redirect to="/" />
 
 		return (
 			<div className="container">
-				<form onSubmit={this.handleSubmit}>
+				<form onSubmit={this.handleSubmit} className={darkenForm}>
 					<h4>Sign In</h4>
 					<div className="input-field">
 						<label htmlFor="email">Email</label>
@@ -73,7 +110,12 @@ class SignIn extends Component {
 						/>
 					</div>
 					<div className="input-field">
-						<button className="btn purple lighten-1 z-depth-0">Login</button>
+						<button
+							className={`btn z-depth-0 ${darkenButton}`}
+							onClick={this.handleClick}
+						>
+							Login
+						</button>
 					</div>
 					<div className="red-text center">
 						{ error ? <p>{authError.message}</p> : null }
@@ -106,7 +148,8 @@ SignIn.propTypes = {
 		code: PropTypes.string.isRequired,
 		message: PropTypes.string.isRequired
 	}),
-	signIn: PropTypes.func.isRequired
+	signIn: PropTypes.func.isRequired,
+	mobileNavVisible: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn)

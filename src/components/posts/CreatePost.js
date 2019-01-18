@@ -18,7 +18,8 @@ class CreatePost extends Component {
 		freezeMessage: false,
 		formError: false,
 		titleError: false,
-		messageError: false
+		messageError: false,
+		mobileMenuVisible: false
 	}
 
 	// component methods
@@ -122,6 +123,20 @@ class CreatePost extends Component {
 		e.preventDefault()
 	}
 
+	handleClick = e => {
+		const { mobileMenuVisible } = this.state
+
+		// if a mobile menu is open, still allow
+		// click events so a click outside the 
+		// menu will close it, but disable
+		// the form so unintentional
+		// submit events won't occur
+		if (mobileMenuVisible) {
+			e.preventDefault()
+			this.setState({ mobileMenuVisible: false })
+		}
+	}
+
 	// lifecycle hooks
 
 	componentDidUpdate(prevProps, prevState) {
@@ -130,6 +145,10 @@ class CreatePost extends Component {
 			messageChars,
 			field
 		} = this.state
+		const {
+			mobileNavVisible,
+			mobileNotesVisible
+		} = this.props
 
 		// if user has entered or deleted anything in the
 		// form call trackChars() and tell it which field
@@ -153,6 +172,15 @@ class CreatePost extends Component {
 				this.setState({
 					messageError: false
 				})
+			}
+		}
+
+		// any time a mobile menu opens
+		// track its status in state
+		if (mobileNavVisible || mobileNotesVisible) {
+			if (prevProps.mobileNavVisible !== mobileNavVisible
+				|| prevProps.mobileNotesVisible !== mobileNotesVisible) {
+					this.setState({ mobileMenuVisible: true })
 			}
 		}
 	}
@@ -203,7 +231,12 @@ class CreatePost extends Component {
 						</textarea>
 					</div>
 					<div className="input-field">
-						<button className={`btn z-depth-0 ${darkenButton}`}>post</button>
+						<button
+							className={`btn z-depth-0 ${darkenButton}`}
+							onClick={this.handleClick}
+						>
+							post
+						</button>
 						<div className="red-text center">
 							{ titleError || messageError ? (
 								<p>Max character limit reached</p>

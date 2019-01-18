@@ -59,7 +59,7 @@ div.main {
 .mobile-links {
 	margin-top: 8px;
 	animation-name: appear;
-	animation-duration: 0.2s;
+	animation-duration: 0.5s;
 }
 
 .mobile-links li a {
@@ -186,15 +186,17 @@ form .green-text p {
 
 .darken {
 	background: rgba(0, 0, 0, 0.3);
-	pointer-events: none;
+	cursor: default;
 }
 
 .darken-form {
 	background: #d8dd84;
 }
 
-.darken-button {
+.darken-button,
+.darken-button:hover {
 	background: #591565;
+	cursor: default;
 }
 
 .darken .brand-logo,

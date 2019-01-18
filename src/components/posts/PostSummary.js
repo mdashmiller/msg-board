@@ -10,7 +10,7 @@ const PostSummary = ({
 
 	// creating a conditional class to darken inactive
 	// elements when the mobile notifications
-	// panel is open
+	// panel or mobile nav is open
 	const darken = mobileNavVisible || mobileNotesVisible ? 'darken' : null
 
 	return (

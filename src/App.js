@@ -27,6 +27,8 @@ class App extends Component {
 	// component methods
 
 	toggleMenu = type => {
+		// set mobile nav or mobile notifications visibility
+		// depending on what the user clicks
 		type === 'nav' &&
 			this.setState(prevState => {
 				const { mobileNavVisible } = prevState
@@ -44,6 +46,33 @@ class App extends Component {
 			})
 	}
 
+	handleClick = e => {
+		const {
+			mobileNavVisible,
+			mobileNotesVisible
+		} = this.state
+
+		// if a mobile menu is open, close it when
+		// user clicks anywhere in the main
+		// content div
+		if (mobileNavVisible || mobileNotesVisible) {
+			if (this.node.contains(e.target)) {
+				this.setState({
+					mobileNavVisible: false,
+					mobileNotesVisible: false
+				})
+			}
+		}
+	}
+
+	// lifecycle hooks
+
+	componentDidMount() {
+		// listen for clicks in order to close an open
+		// mobile menu if user clicks outside it
+		document.addEventListener('click', this.handleClick)
+	}
+
 	render() {
 		const { 
 			mobileNavVisible,
@@ -52,8 +81,7 @@ class App extends Component {
 		const { auth } = this.props
 
 		// creating a conditional class to darken inactive
-		// elements when the mobile notifications
-		// panel is open
+		// elements when a mobile menu is open
 		const darken = mobileNavVisible || mobileNotesVisible ? 'darken' : null
 
 		return (
@@ -88,7 +116,7 @@ class App extends Component {
 							</div>
 						}
 
-						<div className={`main ${darken}`}>
+						<div className={`main ${darken}`} ref={node => this.node = node}>
 							<Switch>
 									<Route 
 										exact path="/"
@@ -107,8 +135,20 @@ class App extends Component {
 												mobileNotesVisible={mobileNotesVisible}
 											/>}
 									/>
-									<Route path="/signin" component={SignIn} />
-									<Route path="/signup" component={SignUp} />
+									<Route
+										path="/signin"
+										render={() =>
+											<SignIn
+												mobileNavVisible={mobileNavVisible}
+											/>}
+									/>
+									<Route
+										path="/signup"
+										render={() =>
+											<SignUp
+												mobileNavVisible={mobileNavVisible}
+											/>}
+									/>
 									<Route
 										path="/create"
 										render={props =>
