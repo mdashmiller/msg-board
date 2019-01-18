@@ -167,11 +167,17 @@ class CreatePost extends Component {
 		} = this.state
 		const { auth, mobileNotesVisible } = this.props
 
+		// creating conditional classes to darken inactive
+		// elements when the mobile notifications
+		// panel is open
+		const darkenForm = mobileNotesVisible ? 'darken-form' : null
+		const darkenButton = mobileNotesVisible ? 'darken-button' : null
+
 		if (!auth.uid) return <Redirect to="/signin" />
 		
 		return (
 			<div className="container">
-				<form onSubmit={this.handleSubmit}>
+				<form onSubmit={this.handleSubmit} className={darkenForm}>
 					<h4>Create Post</h4>
 					<div className="input-field">
 						<label htmlFor="title">Title</label>
@@ -193,7 +199,7 @@ class CreatePost extends Component {
 						</textarea>
 					</div>
 					<div className="input-field">
-						<button className={`btn z-depth-0 ${mobileNotesVisible ? 'darken' : null}`}>post</button>
+						<button className={`btn z-depth-0 ${darkenButton}`}>post</button>
 						<div className="red-text center">
 							{ titleError || messageError ? (
 								<p>Max character limit reached</p>
@@ -254,8 +260,7 @@ CreatePost.propTypes = {
 		uid: PropTypes.string.isRequired
 	}).isRequired,
 	createPost: PropTypes.func.isRequired,
-	mobileNotesVisible: PropTypes.bool.isRequired,
-	history: PropTypes.obj
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatePost)

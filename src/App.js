@@ -39,6 +39,11 @@ class App extends Component {
 		const { mobileNotesVisible } = this.state
 		const { auth } = this.props
 
+		// creating a conditional class to darken inactive
+		// elements when the mobile notifications
+		// panel is open
+		const darken = mobileNotesVisible ? 'darken' : null
+
 		return (
 			<BrowserRouter>
 				  	<div className="App">
@@ -56,20 +61,22 @@ class App extends Component {
 							</div>
 						}
 
-						<div className={`main ${mobileNotesVisible ? 'darken' : null}`}>
+						<div className={`main ${darken}`}>
 							<Switch>
 									<Route 
 										exact path="/"
 										render={() => <Dashboard mobileNotesVisible={mobileNotesVisible} />}
 									/>
-									<Route path="/post/:id" component={PostDetails} />
+									<Route
+										path="/post/:id"
+										render={props => <PostDetails { ...props } mobileNotesVisible={mobileNotesVisible} />}
+									/>
 									<Route path="/signin" component={SignIn} />
 									<Route path="/signup" component={SignUp} />
 									<Route
 										path="/create"
 										render={props => <CreatePost { ...props } mobileNotesVisible={mobileNotesVisible} />}
 									/>
-									<Route path="/edit" component={EditHub} />
 									<Route 
 										path="/edit"
 										render={() => <EditHub mobileNotesVisible={mobileNotesVisible} />}

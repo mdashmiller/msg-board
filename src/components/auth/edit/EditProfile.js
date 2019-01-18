@@ -214,9 +214,16 @@ class EditProfile extends Component {
 			submitSuccess,
 			editProfileError 
 		} = this.state
+		const { mobileNotesVisible } = this.props
+
+		// creating conditional classes to darken inactive
+		// elements when the mobile notifications
+		// panel is open
+		const darkenForm = mobileNotesVisible ? 'darken-form' : null
+		const darkenButton = mobileNotesVisible ? 'darken-button' : null
 
 		return (
-			<form onSubmit={this.handleSubmit} id="user">
+			<form onSubmit={this.handleSubmit} id="user" className={darkenForm}>
 				<h4>Edit Profile</h4>
 				<div className="input-field">
 					<label htmlFor="firstName">First Name</label>
@@ -235,7 +242,7 @@ class EditProfile extends Component {
 					/>
 				</div>
 				<div className="input-field">
-					<button className="btn z-depth-0">Update Profile</button>
+					<button className={`btn z-depth-0 ${darkenButton}`}>Update Profile</button>
 					<div className="center red-text">
 						{ fNameError || lNameError ? (
 							<p>Max character limit reached</p>
@@ -275,7 +282,8 @@ EditProfile.propTypes = {
 		code: PropTypes.string,
 		message: PropTypes.string.isRequired,
 	}),
-	editProfile: PropTypes.func.isRequired
+	editProfile: PropTypes.func.isRequired,
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfile)

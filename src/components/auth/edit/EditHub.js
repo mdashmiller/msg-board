@@ -5,13 +5,13 @@ import EditProfile from './EditProfile'
 import EditAuth from './EditAuth'
 import PropTypes from 'prop-types'
 
-const EditHub = ({ auth }) => {
+const EditHub = ({ auth, mobileNotesVisible }) => {
 	if (!auth.uid) return <Redirect to="/signin" />
 
 	return (
 		<div className="container">
-			<EditProfile />
-			<EditAuth />
+			<EditProfile mobileNotesVisible={mobileNotesVisible} />
+			<EditAuth mobileNotesVisible={mobileNotesVisible} />
 		</div>
 	)	
 }
@@ -53,7 +53,8 @@ EditHub.propTypes = {
 			refreshToken: PropTypes.string
 		}),
 		uid: PropTypes.string
-	}).isRequired
+	}).isRequired,
+	mobileNotesVisible: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps)(EditHub)
