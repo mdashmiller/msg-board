@@ -31,7 +31,7 @@ exports.userJoined = functions.auth.user()
 
 				const newUser = doc.data()
 				const notification = {
-					content: 'joined MessageBot!',
+					content: 'joined Post It!',
 					user: `${newUser.firstName} ${newUser.lastName}`,
 					time: admin.firestore.FieldValue.serverTimestamp()
 				}

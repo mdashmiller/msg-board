@@ -24,7 +24,16 @@ export const signOut = () => {
 	}
 }
 
+const capitialize = name =>
+	// returns a title-cased version of the string given
+	name[0].toUpperCase() + name.substring(1)
+
 export const signUp = newUser => {
+	// title case the names for 
+	// app-wide consistency
+	const firstName = capitialize(newUser.firstName)
+	const lastName = capitialize(newUser.lastName)
+
 	return (dispatch, getState, { getFirebase, getFirestore }) => {
 		const firebase = getFirebase()
 		const firestore = getFirestore()
@@ -34,9 +43,9 @@ export const signUp = newUser => {
 			newUser.password
 		).then(res => {
 			return firestore.collection('users').doc(res.user.uid).set({
-				firstName: newUser.firstName,
-				lastName: newUser.lastName,
-				initials: newUser.firstName[0] + newUser.lastName[0]
+				firstName,
+				lastName,
+				initials: firstName[0] + lastName[0]
 			})
 		}).then(() => {
 			dispatch({ type: 'SIGNUP_SUCCESS' })
