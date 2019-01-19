@@ -29,21 +29,29 @@ class App extends Component {
 	toggleMenu = type => {
 		// set mobile nav or mobile notifications visibility
 		// depending on what the user clicks
-		type === 'nav' &&
+		if (type === 'nav') {
 			this.setState(prevState => {
 				const { mobileNavVisible } = prevState
 				return {
 					mobileNavVisible: !mobileNavVisible
 				}
 			})
+		}
+			
+		if (type === 'notes') {
+			// notifications bell will close mobile nav
+			// if it is open
+			if (this.state.mobileNavVisible) {
+				this.setState({ mobileNavVisible: false })
+			}
 
-		type === 'notes' &&
 			this.setState(prevState => {
 				const { mobileNotesVisible } = prevState
 				return {
 					mobileNotesVisible: !mobileNotesVisible
 				}
 			})
+		}
 	}
 
 	handleClick = e => {
