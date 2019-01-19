@@ -151,17 +151,8 @@ class SignUp extends Component {
 			// the form fields
 			this.setState({ formError: true })
 		} else {
-			// capitalize first letters of name for consistency
-			const formattedFName = firstName[0].toUpperCase() + firstName.substring(1)
-			const formattedLName = lastName[0].toUpperCase() + lastName.substring(1)
-			this.setState({
-				firstName: formattedFName,
-				lastName: formattedLName
-			})
-
-			// allow state to update and
-			// then call action creator
-			setTimeout(() => this.props.signUp(this.state))
+			// call action creator
+			this.props.signUp(this.state)
 		}
 
 		e.preventDefault()
