@@ -112,6 +112,18 @@ i.notes-trigger {
 	padding: 14px 12px 12px 24px;
 }
 
+div#loading {
+	background: #f9ff97;
+	box-shadow: 1px 1px 1.8px grey;
+}
+
+#loading p {
+	margin-top: 2.5em;
+	font-size: 3em;
+	color: #9c27b0;
+	font-family: 'Architects Daughter', Arial, sans-serif;
+}
+
 .notifications-panel {
 	position: fixed;
 	top: 56px;
