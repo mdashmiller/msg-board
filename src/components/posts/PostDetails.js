@@ -42,8 +42,8 @@ const PostDetails = props => {
 		)
 	} else {
 		return (
-			<div className="container center">
-				<p>Loading post...</p>
+			<div id="loading" className="container center">
+				<p>Loading...</p>
 			</div>
 		)
 	}
