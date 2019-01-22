@@ -81,10 +81,14 @@ div.notes-trigger {
 	z-index: 1;
 }
 
-span.notes-trigger,
 i.notes-trigger {
 	cursor: pointer;
 	color: #9c27b0;
+}
+
+span.notes-trigger {
+	cursor: pointer;
+	color: white;
 }
 
 .logged-in {
@@ -128,20 +132,22 @@ div#loading {
 	position: fixed;
 	top: 56px;
 	right: 0;
-	background: black;
-	width: 50vw;
+	height: 100vh;
+	background: url(./img/notebook_paper.jpg);
+	width: 80vw;
 	z-index: 1;
 }
 
 .note-card {
-	width: 36vw;
+	width: 76%;
 	margin: 8px auto 14px;
 }
 
-.note-card-title {
+.note-panel-title {
 	font-family: 'Architects Daughter', Arial, sans-serif;
 	text-transform: uppercase;
-	margin: 1rem 0 1.5rem 7vw;
+	margin: 0.9rem 0 1rem 10.7vw;
+	font-size: 1.8rem;
 }
 
 .desktop-notes {
@@ -207,14 +213,15 @@ form .green-text p {
 
 .darken-button,
 .darken-button:hover {
+	color: grey;
 	background: #591565;
 	cursor: default;
 }
 
 .darken .brand-logo,
-.darken .burger,
-.darken-button {
+.darken-burger {
 	color: grey;
+	pointer-events: none;
 }
 
 /*change materialize form field default colors*/
@@ -271,9 +278,45 @@ nave menu from overlapping navbar */
 	}
 }
 
+/* change relative width of mobile notifications panel
+and position of its h5 as screen gets wider */
+@media screen and (min-width: 431px) {
+	.notifications-panel {
+		width: 75vw;
+	}
+
+	.note-panel-title {
+		margin-left: 9.4vw;
+	}
+}
+
+@media screen and (min-width: 741px) {
+	.notifications-panel {
+		width: 65vw;
+	}
+
+	.note-panel-title {
+		margin-left: 8.2vw;
+	}
+}
+
+@media screen and (min-width: 875px) {
+	.notifications-panel {
+		width: 50vw;
+	}
+
+	.note-panel-title {
+		margin-left: 6.5vw;
+	}
+}
+
 /* desktop styles */
 @media screen and (min-width: 993px) {
 	div.main {
 		padding-top: 4vh;
+	}
+
+	.note-card {
+		box-shadow: 0 0 0;
 	}
 }
