@@ -88,9 +88,10 @@ class App extends Component {
 		} = this.state
 		const { auth } = this.props
 
-		// creating a conditional class to darken inactive
+		// creating conditional classes to darken inactive
 		// elements when a mobile menu is open
 		const darken = mobileNavVisible || mobileNotesVisible ? 'darken' : null
+		const darkenBurger = mobileNotesVisible ? 'darken-burger' : null
 
 		return (
 			<BrowserRouter>
@@ -103,7 +104,7 @@ class App extends Component {
 
 						{/* burger button */}
 						<button 
-							className="burger hide-on-large-only" 
+							className={`burger hide-on-large-only ${darkenBurger}`}
 							onClick={() => this.toggleMenu('nav')}
 						>
 							<i className="material-icons">menu</i>
@@ -117,7 +118,7 @@ class App extends Component {
 								onClick={() => this.toggleMenu('notes')}
 							>
 								{mobileNotesVisible ? (
-									<span className="notes-trigger">CLOSE</span>
+									<span className="notes-trigger close">CLOSE</span>
 								) : (
 									<i className="notes-trigger material-icons">notifications</i>
 								)}

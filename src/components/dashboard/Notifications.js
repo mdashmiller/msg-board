@@ -9,11 +9,11 @@ const Notifications = props => {
 	const { notifications } = props
 	
 	return (
-		<div className="section">
-			<h5 className="white-text note-card-title">Notifications</h5>
+		<div className="section notifications-content">
+			<h5 className="note-panel-title">Notifications</h5>
 				{ notifications && notifications.map(item => {
 					return (
-						<div className="card z-depth-0 note-card" key={item.id}>
+						<div className="card note-card" key={item.id}>
 							<div className="card-content">
 								<span className="purple-text">{item.user} </span>
 								<span>{item.content}</span>
