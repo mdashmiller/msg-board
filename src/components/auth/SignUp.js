@@ -26,7 +26,6 @@ class SignUp extends Component {
 		emailError: false,
 		signUpError: null,
 		submitClicked: false,
-		submitSuccess: false,
 		mobileMenuVisible: false
 	}
 
@@ -187,7 +186,6 @@ class SignUp extends Component {
 			lNameChars,
 			emailChars,
 			field,
-			submitClicked,
 			signUpError
 		} = this.state
 		const {
@@ -264,7 +262,7 @@ class SignUp extends Component {
 			auth,
 			mobileNavVisible
 		} = this.props
-console.log(signUpError)
+
 		// conditional classNames to darken inactive
 		// components when mobile nav is open
 		const darkenForm = mobileNavVisible ? 'darken-form' : null

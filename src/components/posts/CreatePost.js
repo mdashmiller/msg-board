@@ -19,6 +19,8 @@ class CreatePost extends Component {
 		formError: false,
 		titleError: false,
 		messageError: false,
+		postError: null,
+		submitClicked: false,
 		mobileMenuVisible: false
 	}
 
@@ -78,7 +80,9 @@ class CreatePost extends Component {
 			field,
 			formError: false,
 			titleError: false,
-			messageError: false
+			messageError: false,
+			postError: null,
+			submitClicked: false
 		})
 	}
 
@@ -114,14 +118,19 @@ class CreatePost extends Component {
 			// the form fields
 			this.setState({ formError: true })
 		} else {
-			// call action creator and take user
-			// to dashboard
+			// call action creator and tell component
+			// a submission has been made
 			this.props.createPost(this.state)
-			this.props.history.push('/')
+			this.setState({ submitClicked: true })
 		}
 
 		e.preventDefault()
 	}
+
+	submitSuccess = () =>
+		// redirect user to dashboard
+		// upon successful post
+		this.props.history.push('/')
 
 	handleClick = e => {
 		const { mobileMenuVisible } = this.state
@@ -143,11 +152,14 @@ class CreatePost extends Component {
 		const {
 			titleChars,
 			messageChars,
-			field
+			field,
+			postError
 		} = this.state
 		const {
 			mobileNavVisible,
-			mobileNotesVisible
+			mobileNotesVisible,
+			fsSuccess,
+			fsError
 		} = this.props
 
 		// if user has entered or deleted anything in the
@@ -175,6 +187,26 @@ class CreatePost extends Component {
 			}
 		}
 
+		// if there is a new fsError set it in state
+		if (fsError !== prevProps.fsError) {
+			this.setState({ postError: fsError })
+		}
+
+		// if postError in state is null and the component receives a
+		// a different fsError than before or a new occurance 
+		// of the same fsError set it in state
+		if (!postError
+			&& fsError
+			&& fsError !== prevProps.fsError) {
+				this.setState({ postError: fsError })
+		}
+
+		// if fsSuccess has just changed to true call
+		// submitSuccess()
+		if (fsSuccess && fsSuccess !== prevProps.fsSuccess) {
+			this.submitSuccess()
+		}
+
 		// any time a mobile menu opens
 		// track its status in state
 		if (mobileNavVisible || mobileNotesVisible) {
@@ -191,7 +223,9 @@ class CreatePost extends Component {
 			message,
 			formError,
 			titleError,
-			messageError
+			messageError,
+			submitClicked,
+			postError
 		} = this.state
 		const {
 			auth,
@@ -244,6 +278,18 @@ class CreatePost extends Component {
 								null
 							)}
 							{ formError && <p>Please complete all fields</p> }
+							{ postError && <p>{ postError.message }</p>}
+						</div>
+						<div className="center">
+							{ (submitClicked && !postError) ? (
+									<div className="loading-msg">
+										<i className="fas fa-spinner fa-spin"></i>
+										<span>        Posting up...</span>
+									</div>
+								) : (
+									null
+								)
+							}
 						</div>
 					</div>
 				</form>
@@ -254,7 +300,9 @@ class CreatePost extends Component {
 
 const mapStateToProps = state => {
 	return {
-		auth: state.firebase.auth
+		auth: state.firebase.auth,
+		fsSuccess: state.post.postSuccess,
+		fsError: state.post.postError
 	}
 }
 

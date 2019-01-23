@@ -341,4 +341,9 @@ and position of its h5 as screen gets wider */
 	.note-card {
 		box-shadow: 0 0 0;
 	}
+
+	.note-panel-title {
+		margin-left: 0;
+		padding-left: 15px;
+	}
 }
