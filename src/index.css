@@ -199,9 +199,19 @@ form h4 {
 }
 
 form .red-text p,
-form .green-text p {
+form .green-text p,
+form .loading-msg {
 	padding-bottom: 1.5em;
 	font-size: 1.2em;
+}
+
+form .loading-msg span {
+	color: #9c27b0;
+	margin-left: 0.5rem;
+}
+
+form .loading-msg i {
+	color: #888;
 }
 
 .field:-webkit-autofill {
@@ -330,5 +340,10 @@ and position of its h5 as screen gets wider */
 
 	.note-card {
 		box-shadow: 0 0 0;
+	}
+
+	.note-panel-title {
+		margin-left: 0;
+		padding-left: 15px;
 	}
 }
