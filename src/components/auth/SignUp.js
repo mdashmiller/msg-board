@@ -24,6 +24,9 @@ class SignUp extends Component {
 		fNameError: false,
 		lNameError: false,
 		emailError: false,
+		signUpError: null,
+		submitClicked: false,
+		submitSuccess: false,
 		mobileMenuVisible: false
 	}
 
@@ -103,7 +106,9 @@ class SignUp extends Component {
 			formError: false,
 			fNameError: false,
 			lNameError: false,
-			emailError: false
+			emailError: false,
+			signUpError: null,
+			submitClicked: false
 		})
 	}
 
@@ -151,8 +156,10 @@ class SignUp extends Component {
 			// the form fields
 			this.setState({ formError: true })
 		} else {
-			// call action creator
+			// call action creator and tell component
+			// a submission has been made
 			this.props.signUp(this.state)
+			this.setState({ submitClicked: true })
 		}
 
 		e.preventDefault()
@@ -179,9 +186,14 @@ class SignUp extends Component {
 			fNameChars,
 			lNameChars,
 			emailChars,
-			field
+			field,
+			submitClicked,
+			signUpError
 		} = this.state
-		const { mobileNavVisible } = this.props
+		const {
+			mobileNavVisible,
+			authError
+		} = this.props
 
 		// if user has entered or deleted anything in the
 		// form call trackChars() and tell it which field
@@ -216,6 +228,20 @@ class SignUp extends Component {
 			}
 		}
 
+		// if there is a new authError set it in state
+		if (authError !== prevProps.authError) {
+			this.setState({ signUpError: authError })
+		}
+
+		// if signUpError in state is null and the component receives a
+		// a different authError than before or a new occurance 
+		// of the same authError set it in state
+		if (!signUpError
+			&& authError
+			&& authError !== prevProps.authError) {
+				this.setState({ signUpError: authError })
+		}
+
 		// any time the mobile nav opens
 		// track its status in state
 		if (mobileNavVisible) {
@@ -230,14 +256,15 @@ class SignUp extends Component {
 			formError,
 			fNameError,
 			lNameError,
-			emailError
+			emailError,
+			signUpError,
+			submitClicked
 		} = this.state
 		const {
 			auth,
-			authError,
 			mobileNavVisible
 		} = this.props
-
+console.log(signUpError)
 		// conditional classNames to darken inactive
 		// components when mobile nav is open
 		const darkenForm = mobileNavVisible ? 'darken-form' : null
@@ -289,10 +316,21 @@ class SignUp extends Component {
 							Join
 						</button>
 						<div className="red-text center">
-							{ authError && <p>{ authError }</p> }
-							{ formError && <p>Please complete all fields</p> }
 							{ (fNameError || lNameError || emailError) ? (
 									<p>Max character limit reached</p>
+								) : (
+									null
+								)
+							}
+							{ formError && <p>Please complete all fields</p> }
+							{ signUpError && <p>{ signUpError.message }</p> }
+						</div>
+						<div className="center">
+							{ (submitClicked && !signUpError) ? (
+									<div className="loading-msg">
+										<i className="fas fa-spinner fa-spin"></i>
+										<span>        Posting up...</span>
+									</div>
 								) : (
 									null
 								)
