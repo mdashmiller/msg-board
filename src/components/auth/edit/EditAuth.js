@@ -63,8 +63,6 @@ class EditAuth extends Component {
 		this.setState({
 			charError: false,
 			formError: false,
-			submitClicked: false,
-			submitSuccess: false,
 			updateAuthError: null
 		})
 	}
@@ -151,7 +149,10 @@ class EditAuth extends Component {
 		
 		// if there is a new updateAuthError set it in state
 		if (this.props.updateAuthError !== prevProps.updateAuthError) {
-			this.setState({ updateAuthError: this.props.updateAuthError })
+			this.setState({
+				updateAuthError: this.props.updateAuthError,
+				submitClicked: false
+			})
 		}
 
 		// if updateAuthError in state is null and the component receives a
@@ -160,7 +161,10 @@ class EditAuth extends Component {
 		if (!updateAuthError
 			&& this.props.updateAuthError
 			&& this.props.updateAuthError !== prevProps.updateAuthError) {
-				this.setState({ updateAuthError: this.props.updateAuthError })
+				this.setState({
+					updateAuthError: this.props.updateAuthError,
+					submitClicked: false
+				})
 		}
 
 		// if the user has clicked submit and there is no
@@ -185,6 +189,7 @@ class EditAuth extends Component {
 			email,
 			charError,
 			formError,
+			submitClicked,
 			submitSuccess,
 			updateAuthError
 		} = this.state
@@ -193,9 +198,9 @@ class EditAuth extends Component {
 			mobileNotesVisible
 		} = this.props
 		
-		// creating conditional classes to darken inactive
-		// elements when the mobile notifications
-		// panel or mobile nav is open
+		// conditional classNames to darken and
+		// disable components
+		const darken = submitClicked ? 'darken' : null
 		const darkenForm = mobileNavVisible || mobileNotesVisible ? 'darken-form' : null
 		const darkenButton = mobileNavVisible || mobileNotesVisible ? 'darken-button' : null
 
@@ -212,7 +217,7 @@ class EditAuth extends Component {
 				</div>
 				<div className="input-field">
 					<button
-						className={`btn z-depth-0 ${darkenButton}`}
+						className={`btn z-depth-0 ${darken} ${darkenButton}`}
 						onClick={this.handleClick}
 					>
 						Update Email

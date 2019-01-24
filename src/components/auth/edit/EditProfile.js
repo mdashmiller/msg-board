@@ -90,8 +90,6 @@ class EditProfile extends Component {
 			fNameError: false,
 			lNameError: false,
 			formError: false,
-			submitClicked: false,
-			submitSuccess: false,
 			editProfileError: null
 		})
 	}
@@ -203,7 +201,10 @@ class EditProfile extends Component {
 
 		// if there is a new editProfileError set it in state
 		if (this.props.editProfileError !== prevProps.editProfileError) {
-			this.setState({ editProfileError: this.props.editProfileError })
+			this.setState({
+				editProfileError: this.props.editProfileError,
+				submitClicked: false
+			})
 		}
 
 		// if editProfileError in state is null and the component receives a
@@ -212,7 +213,10 @@ class EditProfile extends Component {
 		if (!editProfileError
 			&& this.props.editProfileError
 			&& this.props.editProfileError !== prevProps.editProfileError) {
-				this.setState({ editProfileError: this.props.editProfileError })
+				this.setState({
+					editProfileError: this.props.editProfileError,
+					submitClicked: false
+				})
 		}
 
 		// if the user has clicked submit and there is no
@@ -239,6 +243,7 @@ class EditProfile extends Component {
 			fNameError,
 			lNameError,
 			formError,
+			submitClicked,
 			submitSuccess,
 			editProfileError 
 		} = this.state
@@ -246,10 +251,10 @@ class EditProfile extends Component {
 			mobileNavVisible,
 			mobileNotesVisible
 		} = this.props
-
-		// creating conditional classes to darken inactive
-		// elements when the mobile notifications
-		// panel or mobile nav is open
+		
+		// conditional classNames to darken and
+		// disable components
+		const darken = submitClicked ? 'darken' : null
 		const darkenForm = mobileNavVisible || mobileNotesVisible ? 'darken-form' : null
 		const darkenButton = mobileNavVisible || mobileNotesVisible ? 'darken-button' : null
 
@@ -274,7 +279,7 @@ class EditProfile extends Component {
 				</div>
 				<div className="input-field">
 					<button
-						className={`btn z-depth-0 ${darkenButton}`}
+						className={`btn z-depth-0 ${darken} ${darkenButton}`}
 						onClick={this.handleClick}
 					>
 						Update Profile

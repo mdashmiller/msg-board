@@ -81,8 +81,7 @@ class CreatePost extends Component {
 			formError: false,
 			titleError: false,
 			messageError: false,
-			postError: null,
-			submitClicked: false
+			postError: null
 		})
 	}
 
@@ -189,7 +188,10 @@ class CreatePost extends Component {
 
 		// if there is a new fsError set it in state
 		if (fsError !== prevProps.fsError) {
-			this.setState({ postError: fsError })
+			this.setState({
+				postError: fsError,
+				submitClicked: false
+			})
 		}
 
 		// if postError in state is null and the component receives a
@@ -198,7 +200,10 @@ class CreatePost extends Component {
 		if (!postError
 			&& fsError
 			&& fsError !== prevProps.fsError) {
-				this.setState({ postError: fsError })
+				this.setState({
+					postError: fsError,
+					submitClicked: false
+				})
 		}
 
 		// if fsSuccess has just changed to true call
@@ -233,9 +238,9 @@ class CreatePost extends Component {
 			mobileNotesVisible
 		} = this.props
 
-		// creating conditional classes to darken inactive
-		// elements when the mobile notifications
-		// panel or mobile nav is open
+		// conditional classNames to darken and
+		// disable components
+		const darken = submitClicked ? 'darken' : null
 		const darkenForm = mobileNavVisible || mobileNotesVisible ? 'darken-form' : null
 		const darkenButton = mobileNavVisible || mobileNotesVisible ? 'darken-button' : null
 
@@ -266,7 +271,7 @@ class CreatePost extends Component {
 					</div>
 					<div className="input-field">
 						<button
-							className={`btn z-depth-0 ${darkenButton}`}
+							className={`btn z-depth-0 ${darken} ${darkenButton}`}
 							onClick={this.handleClick}
 						>
 							post
@@ -364,6 +369,29 @@ CreatePost.propTypes = {
 		push: PropTypes.func.isRequired,
 		replace: PropTypes.func
 	}).isRequired,
+	fsError: PropTypes.shape({
+		code: PropTypes.string,
+		message: PropTypes.string.isRequired
+	}),
+	fsSuccess: PropTypes.shape({
+		field: PropTypes.string,
+		formError: PropTypes.bool,
+		freezeMessage: PropTypes.bool,
+		freezeTitle: PropTypes.bool,
+		key: PropTypes.string,
+		message: PropTypes.string,
+		messageChars: PropTypes.number,
+		messageError: PropTypes.bool,
+		mobileMenuVisible: PropTypes.bool,
+		postError: PropTypes.shape({
+			code: PropTypes.string,
+			message: PropTypes.string
+		}),
+		submitClicked: PropTypes.bool,
+		title: PropTypes.string,
+		titleChars: PropTypes.number,
+		titleError: PropTypes.bool
+	}),
 	mobileNavVisible: PropTypes.bool.isRequired,
 	mobileNotesVisible: PropTypes.bool.isRequired
 }
