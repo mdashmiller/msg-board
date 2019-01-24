@@ -106,8 +106,7 @@ class SignUp extends Component {
 			fNameError: false,
 			lNameError: false,
 			emailError: false,
-			signUpError: null,
-			submitClicked: false
+			signUpError: null
 		})
 	}
 
@@ -228,7 +227,10 @@ class SignUp extends Component {
 
 		// if there is a new authError set it in state
 		if (authError !== prevProps.authError) {
-			this.setState({ signUpError: authError })
+			this.setState({
+				signUpError: authError,
+				submitClicked: false
+			})
 		}
 
 		// if signUpError in state is null and the component receives a
@@ -237,7 +239,10 @@ class SignUp extends Component {
 		if (!signUpError
 			&& authError
 			&& authError !== prevProps.authError) {
-				this.setState({ signUpError: authError })
+				this.setState({
+					signUpError: authError,
+					submitClicked: false
+				})
 		}
 
 		// any time the mobile nav opens
@@ -262,9 +267,10 @@ class SignUp extends Component {
 			auth,
 			mobileNavVisible
 		} = this.props
-
-		// conditional classNames to darken inactive
-		// components when mobile nav is open
+		
+		// conditional classNames to darken and
+		// disable components
+		const darken = submitClicked ? 'darken' : null
 		const darkenForm = mobileNavVisible ? 'darken-form' : null
 		const darkenButton = mobileNavVisible ? 'darken-button' : null
 
@@ -310,7 +316,7 @@ class SignUp extends Component {
 						/>
 					</div>
 					<div className="input-field">
-						<button className={`btn z-depth-0 ${darkenButton}`} onClick={this.handleClick}>
+						<button className={`btn z-depth-0 ${darken} ${darkenButton}`} onClick={this.handleClick}>
 							Join
 						</button>
 						<div className="red-text center">

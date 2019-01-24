@@ -1,6 +1,6 @@
 const initState = {
 	posts: [],
-	postSuccess: false,
+	postSuccess: null,
 	postError: null
 }
 
@@ -10,7 +10,7 @@ const postReducer = (state = initState, action) => {
 			console.log('created post', action.post)
 			return {
 				...state,
-				postSuccess: true,
+				postSuccess: action.post,
 				postError: null
 			}
 		case 'CREATE_POST_ERROR':
@@ -18,7 +18,7 @@ const postReducer = (state = initState, action) => {
 			return {
 				...state,
 				postError: action.err,
-				postSuccess: false
+				postSuccess: null
 			}
 		default: 
 			return state
