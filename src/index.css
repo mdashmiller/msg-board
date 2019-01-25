@@ -229,7 +229,8 @@ form .loading-msg i {
 }
 
 .darken-button,
-.darken-button:hover {
+.darken-button:hover,
+.darken-button:focus {
 	color: grey;
 	background: #591565;
 	cursor: default;
@@ -238,6 +239,10 @@ form .loading-msg i {
 .darken .brand-logo,
 .darken-burger {
 	color: grey;
+	pointer-events: none;
+}
+
+.disable {
 	pointer-events: none;
 }
 

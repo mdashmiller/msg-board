@@ -200,9 +200,9 @@ class EditAuth extends Component {
 		
 		// conditional classNames to darken and
 		// disable components
-		const darken = submitClicked ? 'darken' : null
+		const disable = submitClicked ? 'disable' : null
 		const darkenForm = mobileNavVisible || mobileNotesVisible ? 'darken-form' : null
-		const darkenButton = mobileNavVisible || mobileNotesVisible ? 'darken-button' : null
+		const darkenButton = mobileNavVisible || mobileNotesVisible || submitClicked ? 'darken-button' : null
 
 		return (
 			<form onSubmit={this.handleSubmit} id="email" className={darkenForm}>
@@ -217,11 +217,22 @@ class EditAuth extends Component {
 				</div>
 				<div className="input-field">
 					<button
-						className={`btn z-depth-0 ${darken} ${darkenButton}`}
+						className={`btn z-depth-0 ${darkenButton} ${disable}`}
 						onClick={this.handleClick}
 					>
 						Update Email
 					</button>
+					<div className="center">
+						{ (submitClicked && !updateAuthError) ? (
+								<div className="loading-msg">
+									<i className="fas fa-spinner fa-spin"></i>
+									<span>        Updating...</span>
+								</div>
+							) : (
+								null
+							)
+						}
+					</div>
 					<div className="center red-text">
 						{ charError && <p>Max character limit reached</p> }
 						{ formError && <p>Please enter a complete email address</p> }
