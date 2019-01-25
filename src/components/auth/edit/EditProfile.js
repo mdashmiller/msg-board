@@ -254,9 +254,9 @@ class EditProfile extends Component {
 		
 		// conditional classNames to darken and
 		// disable components
-		const darken = submitClicked ? 'darken' : null
+		const disable = submitClicked ? 'disable' : null
 		const darkenForm = mobileNavVisible || mobileNotesVisible ? 'darken-form' : null
-		const darkenButton = mobileNavVisible || mobileNotesVisible ? 'darken-button' : null
+		const darkenButton = mobileNavVisible || mobileNotesVisible || submitClicked ? 'darken-button' : null
 
 		return (
 			<form onSubmit={this.handleSubmit} id="user" className={darkenForm}>
@@ -279,11 +279,22 @@ class EditProfile extends Component {
 				</div>
 				<div className="input-field">
 					<button
-						className={`btn z-depth-0 ${darken} ${darkenButton}`}
+						className={`btn z-depth-0 ${disable} ${darkenButton}`}
 						onClick={this.handleClick}
 					>
 						Update Profile
 					</button>
+					<div className="center">
+						{ (submitClicked && !editProfileError) ? (
+								<div className="loading-msg">
+									<i className="fas fa-spinner fa-spin"></i>
+									<span>        Updating...</span>
+								</div>
+							) : (
+								null
+							)
+						}
+					</div>
 					<div className="center red-text">
 						{ fNameError || lNameError ? (
 							<p>Max character limit reached</p>

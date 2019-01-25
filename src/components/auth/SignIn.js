@@ -10,6 +10,7 @@ class SignIn extends Component {
 		email: '',
 		password: '',
 		error: null,
+		submitClicked: false,
 		mobileMenuVisible: false
 	}
 
@@ -22,6 +23,9 @@ class SignIn extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault()
+
+		this.setState({ submitClicked: true })
+
 		this.props.signIn(this.state)
 	}
 
@@ -55,7 +59,10 @@ class SignIn extends Component {
 
 		// if there is a new authError set it in state
 		if (authError !== prevProps.authError) {
-			this.setState({ error: authError })
+			this.setState({
+				error: authError,
+				submitClicked: false
+			})
 		}
 
 		// if error in state is null and the component receives a
@@ -64,7 +71,10 @@ class SignIn extends Component {
 		if (!this.state.error
 			&& authError
 			&& authError !== prevProps.authError) {
-				this.setState({ error: authError })
+				this.setState({
+					error: authError,
+					submitClicked: false
+				})
 		}
 
 		// any time the mobile nav opens
@@ -82,13 +92,18 @@ class SignIn extends Component {
 			authError,
 			mobileNavVisible
 		} = this.props
-		const { error } = this.state
+		const {
+			error,
+			submitClicked
+		} = this.state
 
 		// conditional classNames to darken inactive
 		// components when mobile nav is open
+		const disable = submitClicked ? 'disable' : null
 		const darkenForm = mobileNavVisible ? 'darken-form' : null
-		const darkenButton = mobileNavVisible ? 'darken-button' : null
+		const darkenButton = mobileNavVisible || submitClicked ? 'darken-button' : null
 
+		// send user to dashboard upon successful login
 		if (auth.uid) return <Redirect to="/" />
 
 		return (
@@ -111,11 +126,22 @@ class SignIn extends Component {
 					</div>
 					<div className="input-field">
 						<button
-							className={`btn z-depth-0 ${darkenButton}`}
+							className={`btn z-depth-0 ${disable} ${darkenButton}`}
 							onClick={this.handleClick}
 						>
 							Login
 						</button>
+					</div>
+					<div className="center">
+						{ (submitClicked && !error) ? (
+								<div className="loading-msg">
+									<i className="fas fa-spinner fa-spin"></i>
+									<span>        Posting up...</span>
+								</div>
+							) : (
+								null
+							)
+						}
 					</div>
 					<div className="red-text center">
 						{ error ? <p>{authError.message}</p> : null }
@@ -145,7 +171,7 @@ SignIn.propTypes = {
 		isLoaded: PropTypes.bool.isRequired
 	}).isRequired,
 	authError: PropTypes.shape({
-		code: PropTypes.string.isRequired,
+		code: PropTypes.string,
 		message: PropTypes.string.isRequired
 	}),
 	signIn: PropTypes.func.isRequired,
