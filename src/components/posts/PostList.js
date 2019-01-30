@@ -51,15 +51,26 @@ class PostList extends Component {
 
 		return (
 			<div className="post-list section">
-				{ posts && posts.map(post =>
-					<Link to={'/post/' + post.id} key={post.id} onClick={this.handleClick}>
-						<PostSummary
-							post={post} 
-							mobileNavVisible={mobileNavVisible}
-							mobileNotesVisible={mobileNotesVisible}
-						/>
-					</Link>
-				)}
+				{ posts && posts.map(post => {
+					// check to see if it is a new member welcome post
+					// and create a custom class with this info
+					const welcome = (post.authorId === 'PostIt!') ? 'welcome' : null
+
+					return (
+						<Link 
+							to={'/post/' + post.id}
+							key={post.id}
+							onClick={this.handleClick}
+						>
+							<PostSummary
+								post={post} 
+								mobileNavVisible={mobileNavVisible}
+								mobileNotesVisible={mobileNotesVisible}
+								welcome={welcome}
+							/>
+						</Link>
+					)
+				})}
 			</div>
 		)
 	}

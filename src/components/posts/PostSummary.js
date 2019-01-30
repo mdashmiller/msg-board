@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 const PostSummary = ({
 	post,
+	welcome,
 	mobileNavVisible,
 	mobileNotesVisible
 }) => {
@@ -15,7 +16,7 @@ const PostSummary = ({
 
 	return (
 		<div className="card post-summary">
-			<div className={`card-content grey-text text-darken-3 ${darken}`}>
+			<div className={`card-content grey-text text-darken-3 ${darken} ${welcome}`}>
 				<span className="card-title">{post.title}</span>
 				<p>Posted by { post.authorFirstName } { post.authorLastName }</p>
 				<p className="grey-text">{ moment(post.createdAt.toDate()).calendar() }</p>
@@ -37,6 +38,7 @@ PostSummary.propTypes = {
 		message: PropTypes.string.isRequired,
 		title: PropTypes.string.isRequired
 	}).isRequired,
+	welcome: PropTypes.string,
 	mobileNavVisible: PropTypes.bool.isRequired,
 	mobileNotesVisible: PropTypes.bool.isRequired
 }
