@@ -232,6 +232,14 @@ form .loading-msg i {
 	cursor: default;
 }
 
+.darken.welcome {
+	background: #c5b5bb;
+}
+
+.darken.welcome .card-title {
+	color: #7a1b46;
+}
+
 .darken-form {
 	background: #d8dd84;
 }
