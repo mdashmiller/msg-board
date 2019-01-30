@@ -219,6 +219,14 @@ form .loading-msg i {
     transition: 0s !important;
 }
 
+.welcome {
+	background: #fce4ec;
+}
+
+.welcome .card-title {
+	color: #c51162;
+}
+
 .darken {
 	background: rgba(0, 0, 0, 0.3);
 	cursor: default;
