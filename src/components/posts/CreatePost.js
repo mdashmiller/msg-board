@@ -119,7 +119,11 @@ class CreatePost extends Component {
 		} else {
 			// call action creator and tell component
 			// a submission has been made
-			this.props.createPost(this.state)
+			this.props.createPost({
+				title,
+				message
+			})
+			
 			this.setState({ submitClicked: true })
 		}
 
