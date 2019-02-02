@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NotificationsPanel /> rendering has a valid snapshot 1`] = `
+<div
+  className="hide-on-large-only notifications-panel"
+>
+  <div
+    className="section notifications-content"
+  >
+    <h5
+      className="note-panel-title"
+    >
+      Notifications
+    </h5>
+  </div>
+</div>
+`;
