@@ -1,24 +1,72 @@
-// import React from 'react'
-// import ReactDOM from 'react-dom'
-// import renderer from 'react-test-renderer'
-// // import Enzyme, { shallow } from 'enzyme'
-// // import Adapter from 'enzyme-adapter-react-16'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import renderer from 'react-test-renderer'
+import { Provider } from 'react-redux'
+import Enzyme, { shallow } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 
-// import NotificationsPanel from '../components/dashboard/NotificationsPanel'
+import store from '../store/store'
+import NotificationsPanel from '../components/dashboard/NotificationsPanel'
+import Notifications from '../components/dashboard/Notifications'
 
-// // Enzyme.configure({ adapter: new Adapter() })
+Enzyme.configure({ adapter: new Adapter() })
 
-// describe('<NotificationsPanel /> rendering', () => {
+// const state = {
+// 	firestore: {
+// 		ordered: {
+// 			notifications: [
+// 				{
+// 					content: 'example',
+// 					id: '1',
+// 					time: {
+// 						nanoseconds: 1,
+// 						seconds: 1
+// 					},
+// 					user: 'fake-user'
+// 				}
+// 			]
+// 		}
+// 	}
+// }
 
-// 	it('renders without crashing', () => {
-// 	    const div = document.createElement('div')
-// 	    ReactDOM.render(<NotificationsPanel />, div)
-// 	    ReactDOM.unmountComponentAtNode(div)
-// 	})
+describe('<NotificationsPanel /> rendering', () => {
 
-// 	test('has a valid snapshot', () => {
-// 		const component = renderer.create(<NotificationsPanel />)
-// 		let tree = component.toJSON()
-// 		expect(tree).toMatchSnapshot()
-// 	})
-// })
+	it('renders without crashing', () => {
+	    const div = document.createElement('div')
+	    ReactDOM.render(
+	    	<Provider store={store()}>
+	    		<NotificationsPanel />
+	    	</Provider>
+	    , div)
+	    ReactDOM.unmountComponentAtNode(div)
+	})
+
+	test('has a valid snapshot', () => {
+		const component = renderer.create(
+			<Provider store={store()}>
+				<NotificationsPanel />
+			</Provider>
+		)
+		let tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	// it('renders 1 div.notifications-panel', () => {
+	// 	const wrapper = shallow(
+	// 		<Provider store={store(state)}>
+	// 			<NotificationsPanel />
+	// 		</Provider>
+	// 	)
+	// 	expect(wrapper.find('div').length).toBe(1)
+	// 	expect(wrapper.find('div')).hasClass('notifications-panel')
+	// })
+
+	// it('renders 1 <Notifications /> component', () => {
+	// 	const wrapper = shallow(
+	// 		<Provider store={store(state)}>
+	// 			<NotificationsPanel />
+	// 		</Provider>
+	// 	)
+	// 	expect(wrapper.find(Notifications).length).toBe(1)
+	// })
+})
