@@ -91,14 +91,14 @@ class CreatePost extends Component {
 		// specified number of chars
 		switch (field) {
 			case 'title':
-				this.state.titleChars === 100 ? (
+				this.state.titleChars >= 100 ? (
 					this.setState({ freezeTitle: true })
 				) : (
 					this.setState({ freezeTitle: false })
 				)
 				break
 			case 'message':
-				this.state.messageChars === 2000 ? (
+				this.state.messageChars >= 2000 ? (
 					this.setState({ freezeMessage: true })
 				) : (
 					this.setState({ freezeMessage: false })

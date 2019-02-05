@@ -70,7 +70,7 @@ class EditAuth extends Component {
 	trackChars = () => {
 		// set state to prohibit any input that exceeds
 		// the specified number of chars
-		if (this.state.chars === 320) {
+		if (this.state.chars >= 320) {
 			this.setState({ freezeEmail: true })
 		} else {
 			this.setState({ freezeEmail: false })
