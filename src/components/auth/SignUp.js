@@ -116,21 +116,21 @@ class SignUp extends Component {
 		// specified number of chars
 		switch (field) {
 			case 'firstName':
-				this.state.fNameChars === 16 ? (
+				this.state.fNameChars >= 16 ? (
 					this.setState({ fNameFreeze: true })
 				) : (
 					this.setState({ fNameFreeze: false })
 				)
 				break
 			case 'lastName':
-				this.state.lNameChars === 16 ? (
+				this.state.lNameChars >= 16 ? (
 					this.setState({ lNameFreeze: true })
 				) : (
 					this.setState({ lNameFreeze: false })
 				)
 				break
 			case 'email':
-				this.state.emailChars === 320 ? (
+				this.state.emailChars >= 320 ? (
 					this.setState({ emailFreeze: true })
 				) : (
 					this.setState({ emailFreeze: false })
