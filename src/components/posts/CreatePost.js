@@ -50,26 +50,71 @@ class CreatePost extends Component {
 	handleChange = e => {
 		const { key, freezeTitle, freezeMessage } = this.state
 		const field = e.target.id
+		const chars = e.target.value.length
 
-		// if form field is below char limit or if user types
-		// an allowed key set state appropriately
 		if (field === 'title') {
-			if (!freezeTitle || Keys.list.includes(key)) {
+			if (chars > 100) {
+				const title = e.target.value
+				const truncatedTitle = title.substring(0, 100)
 				this.setState({
-					title: e.target.value,
-					titleChars: e.target.value.length
+					freezeTitle: true,
+					titleError: true,
+					title: truncatedTitle,
+					titleChars: 100
 				})
-			}
-		} else {
-			if (!freezeMessage || Keys.list.includes(key)) {
-				this.setState({
-					message: e.target.value,
-					messageChars: e.target.value.length
-				})
+			} else {
+				if (!freezeTitle || Keys.list.includes(key)) {
+					this.setState({
+						title: e.target.value,
+						titleChars: chars
+					})
+				}
 			}
 		}
+
+		// // if user tries to paste in something that exceeds
+		// // the char limit, set state appropriately
+		// if (field === 'title' && chars > 100) {
+		// 	const title = e.target.value
+		// 	const truncatedTitle = title.substring(0, 99)
+		// 	this.setState({
+		// 		freezeTitle: true,
+		// 		titleError: true,
+		// 		title: truncatedTitle
+		// 	})
+		// 	// this.unfreeze('title')
+		// 	return
+		// }
+
+		// // if form field is below char limit or if user types
+		// // an allowed key set state appropriately
+		// if (field === 'title') {
+		// 	if (!freezeTitle || Keys.list.includes(key)) {
+		// 		this.setState({
+		// 			title: e.target.value,
+		// 			titleChars: e.target.value.length
+		// 		})
+		// 	}
+		// } else {
+		// 	if (!freezeMessage || Keys.list.includes(key)) {
+		// 		this.setState({
+		// 			message: e.target.value,
+		// 			messageChars: e.target.value.length
+		// 		})
+		// 	}
+		// }
 	}
 		
+	// unfreeze = field => {
+	// 	// re-enable input
+	// 	field === 'title' ? (
+	// 		this.setState({ freezeTitle: false })
+	// 	) : (
+	// 		this.setState({ freezeMessage: false })
+	// 	)
+	// }
+
+
 	handleFocus = e => {
 		const field = e.target.id
 
@@ -79,6 +124,8 @@ class CreatePost extends Component {
 		this.setState({
 			field,
 			formError: false,
+			freezeTitle: false,
+			freezeMessage: false,
 			titleError: false,
 			messageError: false,
 			postError: null
@@ -241,7 +288,11 @@ class CreatePost extends Component {
 			mobileNavVisible,
 			mobileNotesVisible
 		} = this.props
-
+console.log('title ', title)
+console.log('title.length  ', title.length)
+console.log('this.state.titleChars  ', this.state.titleChars)
+console.log('freezeTitle ', this.state.freezeTitle)
+console.log('titleError ', titleError)
 		// conditional classNames to darken and
 		// disable components
 		const darken = submitClicked ? 'darken' : null
@@ -281,11 +332,8 @@ class CreatePost extends Component {
 							post
 						</button>
 						<div className="red-text center">
-							{ titleError || messageError ? (
-								<p>Max character limit reached</p>
-							) : (
-								null
-							)}
+							{ titleError && <p>Title cannot exceed 100 characters</p> }
+							{ messageError && <p>Message cannot exceed 2000 characters</p>}
 							{ formError && <p>Please complete all fields</p> }
 							{ postError && <p>{ postError.message }</p>}
 						</div>
