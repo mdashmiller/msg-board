@@ -50,22 +50,59 @@ class CreatePost extends Component {
 	handleChange = e => {
 		const { key, freezeTitle, freezeMessage } = this.state
 		const field = e.target.id
+		const chars = e.target.value.length
 
-		// if form field is below char limit or if user types
-		// an allowed key set state appropriately
+		// determine which form field is being used
 		if (field === 'title') {
-			if (!freezeTitle || Keys.list.includes(key)) {
+			// if user attempts to paste-in something that exceeds the
+			// title char limit only display what fits in the limit, freeze
+			// the input and display the appropriate error message
+			if (chars > 100) {
+				const title = e.target.value
+				const truncatedTitle = title.substring(0, 100)
+
 				this.setState({
-					title: e.target.value,
-					titleChars: e.target.value.length
+					freezeTitle: true,
+					titleError: true,
+					title: truncatedTitle,
+					titleChars: 100
 				})
+			} else {
+				// if char limit has not been exceeded or the user pushes
+				// a key from the Keys list (backspace, arrows, etc.)
+				// take the user's input
+				if (!freezeTitle || Keys.list.includes(key)) {
+					this.setState({
+						title: e.target.value,
+						titleChars: chars
+					})
+				}
 			}
 		} else {
-			if (!freezeMessage || Keys.list.includes(key)) {
+			if (chars > 2000) {
+				// if user attempts to paste-in something that exceeds
+				// the message char limit only display what fits in
+				// the limit, freeze the input and display
+				// the appropriate error message
+				const message = e.target.value
+				const truncatedMessage = message.substring(0, 2000)
+				
 				this.setState({
-					message: e.target.value,
-					messageChars: e.target.value.length
+					freezeMessage: true,
+					messageError: true,
+					message: truncatedMessage,
+					messageChars: 2000
 				})
+			} else {
+				// if char limit has not been exceeded or the user pushes
+				// a key from the Keys list (backspace, arrows, etc.)
+				// take the user's input
+				if (!freezeMessage || Keys.list.includes(key)) {
+					this.setState({
+						message: e.target.value,
+						messageChars: chars
+					})
+				}
 			}
 		}
 	}
@@ -79,6 +116,8 @@ class CreatePost extends Component {
 		this.setState({
 			field,
 			formError: false,
+			freezeTitle: false,
+			freezeMessage: false,
 			titleError: false,
 			messageError: false,
 			postError: null
@@ -281,11 +320,8 @@ class CreatePost extends Component {
 							post
 						</button>
 						<div className="red-text center">
-							{ titleError || messageError ? (
-								<p>Max character limit reached</p>
-							) : (
-								null
-							)}
+							{ titleError && <p>Title cannot exceed 100 characters</p> }
+							{ messageError && <p>Message cannot exceed 2000 characters</p>}
 							{ formError && <p>Please complete all fields</p> }
 							{ postError && <p>{ postError.message }</p>}
 						</div>
