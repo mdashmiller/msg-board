@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { editProfile } from '../../../store/actions/authActions'
-import Keys from '../../../Keys'
+import NotChars from '../../../NotChars'
 import PropTypes from 'prop-types'
 
 class EditProfile extends Component {
@@ -28,20 +28,25 @@ class EditProfile extends Component {
 
 	handleKeyDown = e => {
 		const {
+			field,
 			fNameFreeze,
 			lNameFreeze
 		} = this.state
 		const key = e.key
 
-		// if char limit for the field has been reached
-		// and user tries to enter another char set
-		// state to display an error message
-		if (fNameFreeze && !Keys.list.includes(key)) {
-			this.setState({ fNameError: true })
-		}
-
-		if (lNameFreeze && !Keys.list.includes(key)) {
-			this.setState({ lNameError: true })
+		// determine field user is in
+		if (field === 'firstName') {
+			// if char limit for the field has been reached
+			// and user tries to enter another char set
+			// state to display an error message
+			if (fNameFreeze && !NotChars.list.includes(key)) {
+				this.setState({ fNameError: true })
+			}
+		// field is lastName
+		} else {
+			if (lNameFreeze && !NotChars.list.includes(key)) {
+				this.setState({ lNameError: true })
+			}
 		}
 
 		this.setState({ key })
@@ -50,22 +55,59 @@ class EditProfile extends Component {
 	handleChange = e => {
 		const { key, fNameFreeze, lNameFreeze } = this.state
 		const field = e.target.id
+		const chars = e.target.value.length
 
-		// if form field is below char limit or if user types
-		// an allowed key set state appropriately
+		// determine which form field is being used
 		if (field === 'firstName') {
-			if (!fNameFreeze || Keys.list.includes(key)) {
+			// if user attempts to paste-in something that exceeds the
+			// char limit only display what fits in the limit, freeze
+			// the input and display the appropriate error message
+			if (chars > 16) {
+				const fName = e.target.value
+				const truncatedFName = fName.substring(0, 16)
+
 				this.setState({
-					firstName: e.target.value,
-					fNameChars: e.target.value.length
+					fNameFreeze: true,
+					fNameError: true,
+					firstName: truncatedFName,
+					fNameChars: 16
 				})
+			} else {
+				// if char limit has not been exceeded or the user pushes
+				// a key from the NotChars list (backspace, arrows, etc.)
+				// take the user's input
+				if (!fNameFreeze || NotChars.list.includes(key)) {
+					this.setState({
+						firstName: e.target.value,
+						fNameChars: chars
+					})
+				}
 			}
+		// field is lastName
 		} else {
-			if (!lNameFreeze || Keys.list.includes(key)) {
+			if (chars > 16) {
+				// if user attempts to paste-in something that exceeds the
+				// char limit only display what fits in the limit, freeze
+				// the input and display the appropriate error message
+				const lName = e.target.value
+				const truncatedLName = lName.substring(0, 16)
+
 				this.setState({
-					lastName: e.target.value,
-					lNameChars: e.target.value.length
+					lNameFreeze: true,
+					lNameError: true,
+					lastName: truncatedLName,
+					lNameChars: 16
 				})
+			} else {
+				// if char limit has not been exceeded or the user pushes
+				// a key from the NotChars list (backspace, arrows, etc.)
+				// take the user's input
+				if (!lNameFreeze || NotChars.list.includes(key)) {
+					this.setState({
+						lastName: e.target.value,
+						lNameChars: chars
+					})
+				}
 			}
 		}
 	}
@@ -296,11 +338,8 @@ class EditProfile extends Component {
 						}
 					</div>
 					<div className="center red-text">
-						{ fNameError || lNameError ? (
-							<p>Max character limit reached</p>
-						) : (
-							null
-						)}
+						{ fNameError && <p>First name cannot exceed 16 characters</p> }
+						{ lNameError && <p>Last name cannot exceed 16 characters</p>}
 						{ formError && <p>Please complete all fields</p> }
 						{ editProfileError && <p>{ editProfileError.message }</p> }
 					</div>

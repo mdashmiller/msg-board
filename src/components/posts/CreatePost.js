@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { createPost } from  '../../store/actions/postActions'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import Keys from '../../Keys'
+import NotChars from '../../NotChars'
 import PropTypes from 'prop-types'
 
 class CreatePost extends Component {
@@ -28,20 +28,25 @@ class CreatePost extends Component {
 
 	handleKeyDown = e => {
 		const {
+			field,
 			freezeTitle,
 			freezeMessage
 		} = this.state
 		const key = e.key
 
-		// if char limit for the field has been reached
-		// and user tries to enter another char set
-		// state to display an error message
-		if (freezeTitle && !Keys.list.includes(key)) {
-			this.setState({ titleError: true })
-		}
-
-		if (freezeMessage && !Keys.list.includes(key)) {
-			this.setState({ messageError: true })
+		// determine field user is in
+		if (field === 'title') {
+			// if char limit for the field has been reached
+			// and user tries to enter another char set
+			// state to display an error message
+			if (freezeTitle && !NotChars.list.includes(key)) {
+				this.setState({ titleError: true })
+			}
+		// field is message
+		} else {
+			if (freezeMessage && !NotChars.list.includes(key)) {
+				this.setState({ messageError: true })
+			}
 		}
 
 		this.setState({ key })
@@ -69,9 +74,9 @@ class CreatePost extends Component {
 				})
 			} else {
 				// if char limit has not been exceeded or the user pushes
-				// a key from the Keys list (backspace, arrows, etc.)
+				// a key from the NotChars list (backspace, arrows, etc.)
 				// take the user's input
-				if (!freezeTitle || Keys.list.includes(key)) {
+				if (!freezeTitle || NotChars.list.includes(key)) {
 					this.setState({
 						title: e.target.value,
 						titleChars: chars
@@ -95,9 +100,9 @@ class CreatePost extends Component {
 				})
 			} else {
 				// if char limit has not been exceeded or the user pushes
-				// a key from the Keys list (backspace, arrows, etc.)
+				// a key from the NotChars list (backspace, arrows, etc.)
 				// take the user's input
-				if (!freezeMessage || Keys.list.includes(key)) {
+				if (!freezeMessage || NotChars.list.includes(key)) {
 					this.setState({
 						message: e.target.value,
 						messageChars: chars

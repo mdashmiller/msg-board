@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { authUpdate } from '../../../store/actions/authActions'
-import Keys from '../../../Keys'
+import NotChars from '../../../NotChars'
 import PropTypes from 'prop-types'
 
 class EditAuth extends Component {
@@ -28,7 +28,7 @@ class EditAuth extends Component {
 		// if char limit for the field has been reached
 		// and user tries to enter another char set
 		// state to display an error message
-		if (freezeEmail && !Keys.list.includes(key)) {
+		if (freezeEmail && !NotChars.list.includes(key)) {
 			this.setState({ charError: true })
 		}
 
@@ -40,7 +40,7 @@ class EditAuth extends Component {
 
 		// if form field is below char limit or if user types
 		// an allowed key set state appropriately
-		if (!freezeEmail || Keys.list.includes(key)) {
+		if (!freezeEmail || NotChars.list.includes(key)) {
 			this.setState({
 				email: e.target.value,
 				chars: e.target.value.length
