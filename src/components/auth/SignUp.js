@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signUp } from '../../store/actions/authActions'
-import Keys from '../../Keys'
+import NotChars from '../../NotChars'
 import PropTypes from 'prop-types'
 
 class SignUp extends Component {
@@ -42,15 +42,15 @@ class SignUp extends Component {
 		// if char limit for the field has been reached
 		// and user tries to enter another char set
 		// state to display an error message
-		if (fNameFreeze && !Keys.list.includes(key)) {
+		if (fNameFreeze && !NotChars.list.includes(key)) {
 			this.setState({ fNameError: true })
 		}
 
-		if (lNameFreeze && !Keys.list.includes(key)) {
+		if (lNameFreeze && !NotChars.list.includes(key)) {
 			this.setState({ lNameError: true })
 		}
 
-		if (emailFreeze && !Keys.list.includes(key)) {
+		if (emailFreeze && !NotChars.list.includes(key)) {
 			this.setState({ emailError: true })
 		}
 
@@ -69,21 +69,21 @@ class SignUp extends Component {
 		// if form field is below char limit or if user types
 		// an allowed key set state appropriately
 		if (field === 'firstName') {
-			if (!fNameFreeze || Keys.list.includes(key)) {
+			if (!fNameFreeze || NotChars.list.includes(key)) {
 				this.setState({
 					firstName: e.target.value,
 					fNameChars: e.target.value.length
 				})
 			}
 		} else if (field === 'lastName') {
-			if (!lNameFreeze || Keys.list.includes(key)) {
+			if (!lNameFreeze || NotChars.list.includes(key)) {
 				this.setState({
 					lastName: e.target.value,
 					lNameChars: e.target.value.length
 				})
 			}
 		} else if (field === 'email') {
-			if (!emailFreeze || Keys.list.includes(key)) {
+			if (!emailFreeze || NotChars.list.includes(key)) {
 				this.setState({
 					email: e.target.value,
 					emailChars: e.target.value.length
