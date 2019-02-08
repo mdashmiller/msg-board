@@ -37,14 +37,30 @@ class EditAuth extends Component {
 
 	handleChange = e => {
 		const { key, freezeEmail } = this.state
+		const chars = e.target.value.length
 
-		// if form field is below char limit or if user types
-		// an allowed key set state appropriately
-		if (!freezeEmail || NotChars.list.includes(key)) {
+		// if user attempts to paste-in something that exceeds the
+		// char limit only display what fits in the limit, freeze
+		// the input and display the appropriate error message
+		if (chars > 320) {
+			const email = e.target.value
+			const truncatedEmail = email.substring(0, 320)
+
 			this.setState({
-				email: e.target.value,
-				chars: e.target.value.length
+				freezeEmail: true,
+				charError: true,
+				email: truncatedEmail,
+				chars: 320
 			})
+		} else {
+			// if form field is below char limit or if user types
+			// a non-char key set state appropriately
+			if (!freezeEmail || NotChars.list.includes(key)) {
+				this.setState({
+					email: e.target.value,
+					chars: e.target.value.length
+				})
+			}
 		}
 	}
 
@@ -59,7 +75,7 @@ class EditAuth extends Component {
 		}
 
 		// clears error message when user
-		// focuses on a form field
+		// re-focuses on the form field
 		this.setState({
 			charError: false,
 			formError: false,
@@ -234,7 +250,7 @@ class EditAuth extends Component {
 						}
 					</div>
 					<div className="center red-text">
-						{ charError && <p>Max character limit reached</p> }
+						{ charError && <p>Email cannot exceed 320 characters</p> }
 						{ formError && <p>Please enter a complete email address</p> }
 						{ updateAuthError && <p>{ updateAuthError.message }</p> }
 					</div>
