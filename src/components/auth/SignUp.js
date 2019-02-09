@@ -33,25 +33,29 @@ class SignUp extends Component {
 
 	handleKeyDown = e => {
 		const {
+			field,
 			fNameFreeze,
 			lNameFreeze,
 			emailFreeze
 		} = this.state
 		const key = e.key
 
-		// if char limit for the field has been reached
-		// and user tries to enter another char set
-		// state to display an error message
-		if (fNameFreeze && !NotChars.list.includes(key)) {
-			this.setState({ fNameError: true })
-		}
-
-		if (lNameFreeze && !NotChars.list.includes(key)) {
-			this.setState({ lNameError: true })
-		}
-
-		if (emailFreeze && !NotChars.list.includes(key)) {
-			this.setState({ emailError: true })
+		// determine form field user is using
+		if (field === 'firstName') {
+			// if char limit for the field has been reached
+			// and user tries to enter another char set
+			// state to display an error message
+			if (fNameFreeze && !NotChars.list.includes(key)) {
+				this.setState({ fNameError: true })
+			}
+		} else if (field === 'lastName') {
+			if (lNameFreeze && !NotChars.list.includes(key)) {
+				this.setState({ lNameError: true })
+			}
+		} else if (field === 'email') {
+			if (emailFreeze && !NotChars.list.includes(key)) {
+				this.setState({ emailError: true })
+			}
 		}
 
 		this.setState({ key })
@@ -59,37 +63,80 @@ class SignUp extends Component {
 
 	handleChange = e => {
 		const {
+			field,
 			key,
 			emailFreeze,
 			fNameFreeze,
 			lNameFreeze
 		} = this.state
-		const field = e.target.id
+		const chars = e.target.value.length
 
-		// if form field is below char limit or if user types
-		// an allowed key set state appropriately
+		// determine which form field is being used
 		if (field === 'firstName') {
-			if (!fNameFreeze || NotChars.list.includes(key)) {
+			// if user attempts to paste-in something that exceeds the
+			// char limit only display what fits in the limit, freeze
+			// the input and display the appropriate error message
+			if (chars > 16) {
+				const fName = e.target.value
+				const truncatedFName = fName.substring(0, 16)
+
 				this.setState({
-					firstName: e.target.value,
-					fNameChars: e.target.value.length
+					fNameFreeze: true,
+					fNameError: true,
+					firstName: truncatedFName,
+					fNameChars: 16
 				})
+			} else {
+				// if char limit has not been exceeded or the user pushes
+				// a key from the NotChars list (backspace, arrows, etc.)
+				// take the user's input
+				if (!fNameFreeze || NotChars.list.includes(key)) {
+					this.setState({
+						firstName: e.target.value,
+						fNameChars: chars
+					})
+				}
 			}
 		} else if (field === 'lastName') {
-			if (!lNameFreeze || NotChars.list.includes(key)) {
+			if (chars > 16) {
+				const lName = e.target.value
+				const truncatedLName = lName.substring(0, 16)
+
 				this.setState({
-					lastName: e.target.value,
-					lNameChars: e.target.value.length
+					lNameFreeze: true,
+					lNameError: true,
+					lastName: truncatedLName,
+					lNameChars: 16
 				})
+			} else {
+				if (!lNameFreeze || NotChars.list.includes(key)) {
+					this.setState({
+						lastName: e.target.value,
+						lNameChars: chars
+					})
+				}
 			}
 		} else if (field === 'email') {
-			if (!emailFreeze || NotChars.list.includes(key)) {
+			if (chars > 320) {
+				const email = e.target.value
+				const truncatedEmail = email.substring(0, 320)
+
 				this.setState({
-					email: e.target.value,
-					emailChars: e.target.value.length
+					emailFreeze: true,
+					emailError: true,
+					email: truncatedEmail,
+					emailChars: 320
 				})
+			} else {
+				if (!emailFreeze || NotChars.list.includes(key)) {
+					this.setState({
+						email: e.target.value,
+						emailChars: chars
+					})
+				}
 			}
-		} else if (field === 'password') {
+		// field is password
+		} else {
 			this.setState({ password: e.target.value })
 		}
 	}
@@ -320,12 +367,9 @@ class SignUp extends Component {
 							Join
 						</button>
 						<div className="red-text center">
-							{ (fNameError || lNameError || emailError) ? (
-									<p>Max character limit reached</p>
-								) : (
-									null
-								)
-							}
+							{ fNameError && <p>First name cannot exceed 16 characters</p> }
+							{ lNameError && <p>Last name cannot exceed 16 characters</p> }
+							{ emailError && <p>Email cannot exceed 320 characters</p> }
 							{ formError && <p>Please complete all fields</p> }
 							{ signUpError && <p>{ signUpError.message }</p> }
 						</div>

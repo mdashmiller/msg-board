@@ -53,8 +53,12 @@ class EditProfile extends Component {
 	}
 
 	handleChange = e => {
-		const { key, fNameFreeze, lNameFreeze } = this.state
-		const field = e.target.id
+		const {
+			field,
+			key,
+			fNameFreeze,
+			lNameFreeze
+		} = this.state
 		const chars = e.target.value.length
 
 		// determine which form field is being used
@@ -293,7 +297,7 @@ class EditProfile extends Component {
 			mobileNavVisible,
 			mobileNotesVisible
 		} = this.props
-		
+
 		// conditional classNames to darken and
 		// disable components
 		const disable = submitClicked ? 'disable' : null
@@ -339,7 +343,7 @@ class EditProfile extends Component {
 					</div>
 					<div className="center red-text">
 						{ fNameError && <p>First name cannot exceed 16 characters</p> }
-						{ lNameError && <p>Last name cannot exceed 16 characters</p>}
+						{ lNameError && <p>Last name cannot exceed 16 characters</p> }
 						{ formError && <p>Please complete all fields</p> }
 						{ editProfileError && <p>{ editProfileError.message }</p> }
 					</div>
