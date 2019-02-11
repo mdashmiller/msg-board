@@ -58,7 +58,7 @@ exports.welcomePost = functions.auth.user()
 					authorFirstName: 'Post',
 					authorLastName: 'It!',
 					createdAt: admin.firestore.FieldValue.serverTimestamp(),
-					message: "Welcome to PostIt! Let's share some thoughts and stuff...",
+					message: "Welcome to Post It! Let's share some thoughts and stuff...",
 					title: `Hi, ${newUser.firstName} ${newUser.lastName}!`
 				}
 
