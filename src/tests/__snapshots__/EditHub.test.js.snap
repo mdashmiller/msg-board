@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<EditHub /> rendering has a valid snapshot 1`] = `null`;
-
-exports[`<EditHub /> rendering should have a valid snapshot 1`] = `null`;
-
-exports[`<EditHub /> snapshot should have a valid snapshot 1`] = `null`;

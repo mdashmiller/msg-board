@@ -6,12 +6,13 @@ import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 // import moment from 'moment'
 
-import store from '../store/store'
-import NotificationsPanel from '../components/dashboard/NotificationsPanel'
-import Notifications from '../components/dashboard/Notifications'
+import store from '../../../store/store'
+import NotificationsPanel from '../../../components/dashboard/NotificationsPanel'
+import Notifications from '../../../components/dashboard/Notifications'
 
 Enzyme.configure({ adapter: new Adapter() })
 
+// fake info to render a notification
 const state = {
 	firestore: {
 		ordered: {
