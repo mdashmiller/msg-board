@@ -2,32 +2,34 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import renderer from 'react-test-renderer'
 import { Provider } from 'react-redux'
-import Enzyme, { shallow } from 'enzyme'
+import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
+// import moment from 'moment'
 
-import store from '../store/store'
-import NotificationsPanel from '../components/dashboard/NotificationsPanel'
-import Notifications from '../components/dashboard/Notifications'
+import store from '../../../store/store'
+import NotificationsPanel from '../../../components/dashboard/NotificationsPanel'
+import Notifications from '../../../components/dashboard/Notifications'
 
 Enzyme.configure({ adapter: new Adapter() })
 
-// const state = {
-// 	firestore: {
-// 		ordered: {
-// 			notifications: [
-// 				{
-// 					content: 'example',
-// 					id: '1',
-// 					time: {
-// 						nanoseconds: 1,
-// 						seconds: 1
-// 					},
-// 					user: 'fake-user'
-// 				}
-// 			]
-// 		}
-// 	}
-// }
+// fake info to render a notification
+const state = {
+	firestore: {
+		ordered: {
+			notifications: [
+				{
+					content: 'example',
+					id: '1',
+					time: {
+						nanoseconds: 1,
+						seconds: 1
+					},
+					user: 'fake-user'
+				}
+			]
+		}
+	}
+}
 
 describe('<NotificationsPanel /> rendering', () => {
 
@@ -51,14 +53,15 @@ describe('<NotificationsPanel /> rendering', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	// // TypeError: item.time.toDate is not a function
 	// it('renders 1 div.notifications-panel', () => {
-	// 	const wrapper = shallow(
+	// 	const wrapper = mount(
 	// 		<Provider store={store(state)}>
 	// 			<NotificationsPanel />
 	// 		</Provider>
 	// 	)
 	// 	expect(wrapper.find('div').length).toBe(1)
-	// 	expect(wrapper.find('div')).hasClass('notifications-panel')
+	// 	// expect(wrapper.find('div')).hasClass('notifications-panel')
 	// })
 
 	// it('renders 1 <Notifications /> component', () => {
