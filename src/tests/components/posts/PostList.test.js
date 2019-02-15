@@ -275,7 +275,6 @@ describe('componentDidUpdate()', () => {
 
 // describe('<PostList /> snapshot', () => {
 // 	// need to mock moment.js
-
 // 	it('should have a valid snapshot', () => {
 // 		const component = renderer.create(
 // 			<BrowserRouter>
