@@ -144,8 +144,6 @@ describe('handleClick()', () => {
 			wrapper.find(Link).simulate('click')
 
 			setTimeout(() => {
-				wrapper.update()
-
 				expect(instance.handleClick).toHaveBeenCalledTimes(1)
 			})
 		})
@@ -161,20 +159,94 @@ describe('handleClick()', () => {
 			wrapper.find(Link).simulate('click')
 
 			setTimeout(() => {
-				wrapper.update()
-
 				expect(instance.handleClick).toHaveReturnedTimes(1)
 				expect(instance.state('menuVisible')).toBe(false)
 			})
 		})
 
-		it('should call e.prevenDefault() when state.menuVisible', () => {
+		let wrapper
+		// mocking e.preventDefault
+		const event = {
+			preventDefault: jest.fn()
+		}
+		// props when mobileNav is visible
+		const navVisible = {
+			posts: [
+				{
+					authorFirstName: 'First',
+					authorLastName: 'Last',
+					createdAt: {
+						nanoseconds: 1,
+						seconds: 1
+					},
+					id: '1',
+					message: 'fake message',
+					title: 'fake title'
+				}
+			],
+			mobileNavVisible: true,
+			mobileNotesVisible: false
+		}
+		// props when mobileNotes are visible
+		const notesVisible = {
+			posts: [
+				{
+					authorFirstName: 'First',
+					authorLastName: 'Last',
+					createdAt: {
+						nanoseconds: 1,
+						seconds: 1
+					},
+					id: '1',
+					message: 'fake message',
+					title: 'fake title'
+				}
+			],
+			mobileNavVisible: false,
+			mobileNotesVisible: true
+		}
 
+		it('should call e.preventDefault() when state.menuVisible', () => {
+			wrapper = setUp(navVisible)
+
+			wrapper.find(Link).simulate('click', event)
+
+			setTimeout(() => {
+				expect(event.preventDefault).toHaveBeenCalledTimes(1)
+			})
+
+			wrapper = setUp(notesVisible)
+
+			wrapper.find(Link).simulate('click', event)
+
+			setTimeout(() => {
+				expect(event.preventDefault).toHaveBeenCalledTimes(2)
+			})
 		})
 
 		it('should set state.menuVisible false when state.menuVisible', () => {
+			wrapper = setUp(navVisible)
 
+			wrapper.find(Link).simulate('click')
+
+			expect(wrapper.state('menuVisible')).toBe(false)
+
+			wrapper = setUp(notesVisible)
+
+			wrapper.find(Link).simulate('click')
+
+			expect(wrapper.state('menuVisible')).toBe(false)
 		})
 	})
+})
 
+describe('componentDidUpdate()', () => {
+
+	// it('should set state.menuVisible to true when mobile nav is open', () => {
+
+	// })
+
+	// it('should set state.menuVisible to true when mobile notes are open', () => {
+		
+	// })
 })
