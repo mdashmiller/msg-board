@@ -60,7 +60,7 @@ class PostList extends Component {
 						<Link 
 							to={'/post/' + post.id}
 							key={post.id}
-							onClick={this.handleClick}
+							onClick={() => this.handleClick}
 						>
 							<PostSummary
 								post={post} 
