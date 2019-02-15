@@ -127,3 +127,54 @@ describe('<PostList /> rendering', () => {
 		})
 	})
 })
+
+describe('handleClick()', () => {
+
+	describe('clicking Link and spying on handleClick()', () => {
+
+		let wrapper
+		let instance
+		beforeEach(() => {
+			wrapper = setUp(propsWithPost)
+			instance = wrapper.instance()
+		})
+
+		it('should call handleClick()', () => {
+			jest.spyOn(instance, 'handleClick')
+			wrapper.find(Link).simulate('click')
+
+			setTimeout(() => {
+				wrapper.update()
+
+				expect(instance.handleClick).toHaveBeenCalledTimes(1)
+			})
+		})
+	})
+
+	describe('directly invoking handleClick()', () => {
+
+		it('should return when !state.menuVisible', () => {
+			const wrapper = setUp(propsWithPost)
+			const instance = wrapper.instance()
+
+			jest.spyOn(instance, 'handleClick')
+			wrapper.find(Link).simulate('click')
+
+			setTimeout(() => {
+				wrapper.update()
+
+				expect(instance.handleClick).toHaveReturnedTimes(1)
+				expect(instance.state('menuVisible')).toBe(false)
+			})
+		})
+
+		it('should call e.prevenDefault() when state.menuVisible', () => {
+
+		})
+
+		it('should set state.menuVisible false when state.menuVisible', () => {
+
+		})
+	})
+
+})
