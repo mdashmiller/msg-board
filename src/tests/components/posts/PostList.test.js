@@ -274,7 +274,7 @@ describe('componentDidUpdate()', () => {
 })
 
 // describe('<PostList /> snapshot', () => {
-// 	// need to mock moment.js
+// 	// post.createdAt.toDate is not a function
 // 	it('should have a valid snapshot', () => {
 // 		const component = renderer.create(
 // 			<BrowserRouter>
@@ -289,7 +289,7 @@ describe('componentDidUpdate()', () => {
 // })
 
 // describe('<PostList /> mounting and unmounting', () => {
-// 	// need to mock moment.js
+// 	// post.createdAt.toDate is not a function
 // 	it('should render without crashing', () => {
 // 	    const div = document.createElement('div')
 
